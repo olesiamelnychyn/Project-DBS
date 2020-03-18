@@ -105,23 +105,23 @@ def printresult(result):
 # printresult(mycursor)
 # mydb.commit()
 
-sqlinsert="INSERT INTO emp_reserv VALUES(%s, %s)"
-values=[
-  (1,1),
-  (1,2),
-  (1,3),
-  (1,4),
-  (2,5),
-  (2,6),
-  (2,7),
-  (3,8),
-  (4,9),
-  (5,10)
-]
-mycursor.executemany(sqlinsert,values)
-mycursor.execute('Select * from emp_reserv')
-printresult(mycursor)
-mydb.commit()
+# sqlinsert="INSERT INTO emp_reserv VALUES(%s, %s)"
+# values=[
+#   (1,1),
+#   (1,2),
+#   (1,3),
+#   (1,4),
+#   (2,5),
+#   (2,6),
+#   (2,7),
+#   (3,8),
+#   (4,9),
+#   (5,10)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from emp_reserv')
+# printresult(mycursor)
+# mydb.commit()
 
 # mycursor.execute('Show Tables')
 # printresult(mycursor)
