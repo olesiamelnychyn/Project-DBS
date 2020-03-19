@@ -5,11 +5,10 @@ mydb = mysql.connector.connect(
     user="sql7328399",
     passwd="JiuG5rmmFh",
     database='sql7328399',
-    port="3306"
+    port="3306",
 )
 mycursor = mydb.cursor()
-print("Done here")
-
+print("run the mydb")
 
 def printresult(result):
   for x in mycursor:
@@ -19,13 +18,43 @@ def getresult(result):
   res=[]
   for x in mycursor:
     res.append(x)
+  return res
 
 def search_all(type):
+  result=["Nothing"]
   if(type=="employees"):
-    mycursor.execute("Select first_name, last_name, wage from employee")
-    mydb.close()
-    return getresult(mycursor)
+    mycursor.execute("Select id, first_name, last_name, wage from employee")
+    result = getresult(mycursor)
+    # mydb.close()
+  return result
 
+# def insert(table, keys, values):
+#   sqlinsert="insert into "+table+" ("
+#   for i in range(0, len(keys)):
+#     sqlinsert+=keys[i]
+#     if(i!=len(keys)-1):
+#       sqlinsert+=", "
+#     else:
+#       sqlinsert+=") "
+#   sqlinsert+="("
+#   for i in range(0,len(values)):
+#     sqlinsert+="\'"+values[i]+"\'"
+#     if(i!=len(keys)-1):
+#       sqlinsert+=", "
+#     else:
+#       sqlinsert+=");"
+
+#   print(sqlinsert)
+def delete_employee(table, id_value):
+  sql_del1="Delete from emp_reserv where emp_id="+id_value+";"
+  sqlDelete="Delete from employee where id="+id_value+";"
+  mycursor.execute(sql_del1)
+  mycursor.execute(sqlDelete)
+  # mycursor.execute()
+  print(sqlDelete)
+  
+
+  
 
 # mycursor.execute("CREATE TABLE gregs_list (last_name VARCHAR(20) NOT NULL, first_name varchar(20) NOT NULL, gender char(1) NOT NULL, email varchar(100) NOT NULL, phone char(10) NOT NULL, birthday date NOT NULL, profession varchar(20) NOT NULL, location varchar(20) NOT NULL, interests varchar(100) NOT NULL, status varchar(10) NOT NULL)")
 # sqlinsert="Insert Into gregs_list Values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"

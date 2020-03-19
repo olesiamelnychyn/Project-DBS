@@ -29,9 +29,6 @@ class SearchEmpWin(QtWidgets.QMainWindow):
         
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
-        
-    
-
 
 
 if __name__=="__main__":
