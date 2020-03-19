@@ -1,0 +1,116 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'searchEmpWindow.ui'
+#
+# Created by: PyQt5 UI code generator 5.14.1
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_SearchWindow(object):
+    def setupUi(self, SearchWindow):
+        SearchWindow.setObjectName("SearchWindow")
+        SearchWindow.resize(615, 447)
+        SearchWindow.setStyleSheet("background-color:white;")
+        self.centralwidget = QtWidgets.QWidget(SearchWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.textSearch = QtWidgets.QTextEdit(self.centralwidget)
+        self.textSearch.setGeometry(QtCore.QRect(10, 10, 421, 31))
+        self.textSearch.setStyleSheet("")
+        self.textSearch.setObjectName("textSearch")
+        # self.textSearch.setText('Enter name')
+        self.butSearch = QtWidgets.QPushButton(self.centralwidget)
+        self.butSearch.setGeometry(QtCore.QRect(460, 400, 141, 31))
+        self.butSearch.setObjectName("butSearch")
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(460, 220, 101, 16))
+        self.label_3.setObjectName("label_3")
+        self.rbtnM = QtWidgets.QRadioButton(self.centralwidget)
+        self.rbtnM.setGeometry(QtCore.QRect(460, 320, 82, 17))
+        self.rbtnM.setObjectName("rbtnM")
+        self.radioButton_2 = QtWidgets.QRadioButton(self.centralwidget)
+        self.radioButton_2.setGeometry(QtCore.QRect(540, 320, 61, 17))
+        self.radioButton_2.setObjectName("radioButton_2")
+        self.cboxPos = QtWidgets.QComboBox(self.centralwidget)
+        self.cboxPos.setGeometry(QtCore.QRect(460, 350, 141, 21))
+        self.cboxPos.setObjectName("cboxPos")
+        self.textEdit_4 = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit_4.setGeometry(QtCore.QRect(460, 30, 91, 31))
+        self.textEdit_4.setObjectName("textEdit_4")
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(460, 10, 111, 16))
+        self.label_4.setObjectName("label_4")
+        self.butRestS = QtWidgets.QPushButton(self.centralwidget)
+        self.butRestS.setGeometry(QtCore.QRect(570, 30, 31, 31))
+        self.butRestS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butRestS.setText("")
+        self.butRestS.setObjectName("butRestS")
+        self.tableView = QtWidgets.QTableView(self.centralwidget)
+        self.tableView.setGeometry(QtCore.QRect(10, 50, 421, 331))
+        self.tableView.setObjectName("tableView")
+        self.listViewRest = QtWidgets.QListView(self.centralwidget)
+        self.listViewRest.setGeometry(QtCore.QRect(460, 70, 141, 31))
+        self.listViewRest.setObjectName("listViewRest")
+        self.textEdit_5 = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit_5.setGeometry(QtCore.QRect(460, 140, 91, 31))
+        self.textEdit_5.setObjectName("textEdit_5")
+        self.butResS = QtWidgets.QPushButton(self.centralwidget)
+        self.butResS.setGeometry(QtCore.QRect(570, 140, 31, 31))
+        self.butResS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butResS.setText("")
+        self.butResS.setObjectName("butResS")
+        self.listViewReserv = QtWidgets.QListView(self.centralwidget)
+        self.listViewReserv.setGeometry(QtCore.QRect(460, 180, 141, 31))
+        self.listViewReserv.setObjectName("listViewReserv")
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(460, 120, 111, 16))
+        self.label_5.setObjectName("label_5")
+        self.butDelete = QtWidgets.QPushButton(self.centralwidget)
+        self.butDelete.setGeometry(QtCore.QRect(260, 400, 171, 31))
+        self.butDelete.setObjectName("butDelete")
+        self.butAdd = QtWidgets.QPushButton(self.centralwidget)
+        self.butAdd.setGeometry(QtCore.QRect(10, 400, 171, 31))
+        self.butAdd.setObjectName("butAdd")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(470, 240, 22, 27))
+        self.label.setObjectName("label")
+        self.textEdit_2 = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit_2.setGeometry(QtCore.QRect(510, 240, 91, 31))
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(470, 280, 21, 21))
+        self.label_2.setObjectName("label_2")
+        self.textEdit_3 = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit_3.setGeometry(QtCore.QRect(510, 280, 91, 31))
+        self.textEdit_3.setObjectName("textEdit_3")
+        SearchWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(SearchWindow)
+        QtCore.QMetaObject.connectSlotsByName(SearchWindow)
+
+    def retranslateUi(self, SearchWindow):
+        _translate = QtCore.QCoreApplication.translate
+        SearchWindow.setWindowTitle(_translate("SearchWindow", "MainWindow"))
+        self.butSearch.setText(_translate("SearchWindow", "Search"))
+        self.label_3.setText(_translate("SearchWindow", "Choose wage range"))
+        self.rbtnM.setText(_translate("SearchWindow", "Male"))
+        self.radioButton_2.setText(_translate("SearchWindow", "Female"))
+        self.label_4.setText(_translate("SearchWindow", "Enter restaurant code"))
+        self.label_5.setText(_translate("SearchWindow", "Enter reservation code"))
+        self.butDelete.setText(_translate("SearchWindow", "Delete"))
+        self.butAdd.setText(_translate("SearchWindow", "Add"))
+        self.label.setText(_translate("SearchWindow", "from"))
+        self.label_2.setText(_translate("SearchWindow", "to"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    SearchWindow = QtWidgets.QMainWindow()
+    ui = Ui_SearchWindow()
+    ui.setupUi(SearchWindow)
+    SearchWindow.show()
+    sys.exit(app.exec_())

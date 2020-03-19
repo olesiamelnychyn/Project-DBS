@@ -4,8 +4,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from startWindow import *
+from searchEmpWindow import *
+from empWindow import *
 
-class MyWin(QtWidgets.QMainWindow):
+class MainWin(QtWidgets.QMainWindow):
     
 
     def __init__(self, parent=None):
@@ -13,13 +15,26 @@ class MyWin(QtWidgets.QMainWindow):
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.butEmp.clicked.connect(self.clicked_btn_employee)
 
+    def clicked_btn_employee(self):
+        self.ui = Ui_SearchWindow()
+        self.ui.setupUi(self)
+
+class SearchEmpWin(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        QtWidgets.QWidget.__init__(self, parent)
+        
+        self.ui = Ui_SearchWindow()
+        self.ui.setupUi(self)
+        
     
 
 
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
-    myapp = MyWin()
+    myapp = MainWin()
     myapp.show()
     sys.exit(app.exec_())
