@@ -1,4 +1,5 @@
 import sys
+import PyQt5
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -35,6 +36,7 @@ class SearchEmpWin(QtWidgets.QMainWindow):
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
+    print("here")
     myapp = MainWin()
     myapp.show()
     sys.exit(app.exec_())

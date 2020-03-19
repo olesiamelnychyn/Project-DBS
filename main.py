@@ -8,10 +8,23 @@ mydb = mysql.connector.connect(
     port="3306"
 )
 mycursor = mydb.cursor()
+print("Done here")
+
 
 def printresult(result):
   for x in mycursor:
     print(x)
+
+def getresult(result):
+  res=[]
+  for x in mycursor:
+    res.append(x)
+
+def search_all(type):
+  if(type=="employees"):
+    mycursor.execute("Select first_name, last_name, wage from employee")
+    mydb.close()
+    return getresult(mycursor)
 
 
 # mycursor.execute("CREATE TABLE gregs_list (last_name VARCHAR(20) NOT NULL, first_name varchar(20) NOT NULL, gender char(1) NOT NULL, email varchar(100) NOT NULL, phone char(10) NOT NULL, birthday date NOT NULL, profession varchar(20) NOT NULL, location varchar(20) NOT NULL, interests varchar(100) NOT NULL, status varchar(10) NOT NULL)")
@@ -127,4 +140,6 @@ def printresult(result):
 # printresult(mycursor)
 # mycursor.execute('desc Zip_code')
 
-mydb.close()
+
+
+

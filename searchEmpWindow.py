@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from main import search_all
 
 
 class Ui_SearchWindow(object):
@@ -25,6 +26,7 @@ class Ui_SearchWindow(object):
         self.butSearch = QtWidgets.QPushButton(self.centralwidget)
         self.butSearch.setGeometry(QtCore.QRect(460, 400, 141, 31))
         self.butSearch.setObjectName("butSearch")
+        self.butSearch.clicked.connect(self.btnSeacrhClick)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(460, 220, 101, 16))
         self.label_3.setObjectName("label_3")
@@ -45,7 +47,7 @@ class Ui_SearchWindow(object):
         self.label_4.setObjectName("label_4")
         self.butRestS = QtWidgets.QPushButton(self.centralwidget)
         self.butRestS.setGeometry(QtCore.QRect(570, 30, 31, 31))
-        self.butRestS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butRestS.setStyleSheet("background-image: url(./img/selbtn.jpg);")
         self.butRestS.setText("")
         self.butRestS.setObjectName("butRestS")
         self.tableView = QtWidgets.QTableView(self.centralwidget)
@@ -59,7 +61,7 @@ class Ui_SearchWindow(object):
         self.textEdit_5.setObjectName("textEdit_5")
         self.butResS = QtWidgets.QPushButton(self.centralwidget)
         self.butResS.setGeometry(QtCore.QRect(570, 140, 31, 31))
-        self.butResS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butResS.setStyleSheet("background-image: url(./img/selbtn.jpg);")
         self.butResS.setText("")
         self.butResS.setObjectName("butResS")
         self.listViewReserv = QtWidgets.QListView(self.centralwidget)
@@ -105,6 +107,9 @@ class Ui_SearchWindow(object):
         self.label.setText(_translate("SearchWindow", "from"))
         self.label_2.setText(_translate("SearchWindow", "to"))
 
+    def btnSeacrhClick(self):
+        result = search_all("employees")
+       
 
 if __name__ == "__main__":
     import sys

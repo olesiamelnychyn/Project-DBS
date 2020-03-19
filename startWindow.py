@@ -14,7 +14,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(573, 390)
-        MainWindow.setStyleSheet("background-image: url(start.png);")
+        MainWindow.setStyleSheet("background-image: url(./img/start.png);")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.butRest = QtWidgets.QPushButton(self.centralwidget)
