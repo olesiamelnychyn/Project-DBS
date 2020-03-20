@@ -22,23 +22,29 @@ class MainWin(QtWidgets.QMainWindow):
     def clicked_btn_employee(self):
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
-
-class SearchEmpWin(QtWidgets.QMainWindow):
-
-    def __init__(self, parent=None):
-        QtWidgets.QWidget.__init__(self, parent)
-        
-        self.ui = Ui_SearchWindow()
-        self.ui.setupUi(self)
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
-
-        "here"
-        # clicked.connect(self.clicked_item)
 
     def clicked_item(self):
         print("grt")
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self)
+
+# class SearchEmpWin(QtWidgets.QMainWindow):
+
+#     def __init__(self, parent=None):
+#         QtWidgets.QWidget.__init__(self, parent)
+        
+#         self.ui = Ui_SearchWindow()
+#         self.ui.setupUi(self)
+#         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
+
+#         "here"
+#         # clicked.connect(self.clicked_item)
+
+#     def clicked_item(self):
+#         print("grt")
+#         self.ui = Ui_EmployeeWindow()
+#         self.ui.setupUi(self)
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
