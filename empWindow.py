@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_EmployeeWindow(object):
     def setupUi(self, EmployeeWindow):
         EmployeeWindow.setObjectName("EmployeeWindow")
-        EmployeeWindow.resize(615, 447)
+        EmployeeWindow.resize(640, 447)
         self.centralwidget = QtWidgets.QWidget(EmployeeWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
