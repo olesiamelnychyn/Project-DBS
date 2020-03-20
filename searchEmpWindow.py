@@ -139,18 +139,21 @@ class Ui_SearchWindow(object):
         self.chboxDesc.setText(_translate("SearchWindow", "Desc"))
 
     def btnSeacrhClick(self):
-        #arg={
-        # 'name':name,
-        # 'surname':sername,
-        # 'age1':age_from,
-        # 'age2': age_to,
-        # 'rest':rest,
-        # 'reserv':reserv,
-        # }
+        arg={
+        'name_sername':'',
+        'age1':'',
+        'age2': '',
+        'rest':'',
+        'reserv':'',
+        'order_by':'',
+        'gender': '',
+        'position':''
+        }
         while (self.tableView.rowCount() > 0):
             self.tableView.removeRow(0)
 
         if(self.textSearch.toPlainText()!=""):
+            arg['name_sername']
             mycursor.execute("select id, first_name, last_name, wage from employee where first_name like \'"+self.textSearch.toPlainText()+"%\' or last_name like \'"+self.textSearch.toPlainText()+"%\' ")
             result=[]
             for x in mycursor:
