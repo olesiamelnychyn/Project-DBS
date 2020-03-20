@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 # from QtGui import *
 # from QtCore import *
 from main import *
+from GUI import *
 
 
 class Ui_SearchWindow(object):
@@ -147,7 +148,6 @@ class Ui_SearchWindow(object):
         self.butDelete.clicked.connect(self.btnDeleteClick)
         
         # Button Add ----------------------------------------------------------
-        
         self.butAdd = QtWidgets.QPushButton(self.centralwidget)
         self.butAdd.setGeometry(QtCore.QRect(10, 450, 171, 31))
         self.butAdd.setObjectName("butAdd")
@@ -172,9 +172,15 @@ class Ui_SearchWindow(object):
         self.textTo.setGeometry(QtCore.QRect(520, 300, 101, 31))
         self.textTo.setObjectName("textTo")
 
+        # SELECT GROUP BY ----------------------------------------------------------
         self.cboxGroup = QtWidgets.QComboBox(self.centralwidget)
         self.cboxGroup.setGeometry(QtCore.QRect(460, 420, 161, 22))
         self.cboxGroup.setObjectName("cboxGroup")
+        self.cboxGroup.addItem("Choose group by")
+        self.cboxGroup.addItem("Restaurant")
+        self.cboxGroup.addItem("Reservation")
+        self.cboxGroup.addItem("Position")
+        self.cboxGroup.addItem("Gender")
         SearchWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(SearchWindow)
@@ -205,7 +211,8 @@ class Ui_SearchWindow(object):
         'wage2': '',
         'gender': '',
         'position':'',
-        'order_by':''
+        'order_by':'',
+        'group_by':''
         }
         while (self.tableView.rowCount() > 0):
             self.tableView.removeRow(0)
@@ -232,16 +239,46 @@ class Ui_SearchWindow(object):
             args['wage2']=str(getresult(mycursor.execute("select max(wage) from employee"))[0][0])
         else:
             args['wage2']=self.textTo.toPlainText()
+        if(self.cboxGroup.currentText()!="Choose group by"):
+            args['group_by']=self.cboxGroup.currentText().lower()
         print(args)
         result=search_all(args)
         
+        if(args['group_by']!=''):
+            # self.tableView.setColumnCount(2)
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Summ(Wage) by "+self.cboxGroup.currentText()+"s"))
+            self.tableView.setColumnWidth(1, 390)
+        else:
+            self.tableView.setColumnCount(4)
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
+            self.tableView.setColumnWidth(1, 130)
+            self.tableView.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
+            self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
+            self.tableView.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Wage"))
+            # MainWin.ui.butAdd.clicked.connect(MainWin.btnAddClicked)
+
         for res in result:
             rowPosition = self.tableView.rowCount()
             self.tableView.insertRow(rowPosition)
-            self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
-            self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
-            self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
-            self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+            if(args['group_by']=="restaurant"):
+                mycursor.execute("select r.capacity, zc.city, zc.state from zip zc join restaurant r on r.zip=zc.id where r.id="+str(res[0])+";")
+                result2=getresult(mycursor)[0]
+                print(result2)
+                it="Capacity: "+str(result2[0])+", "+result2[1]+", "+result2[2]
+                self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(it))
+            elif(args['group_by']=="reservation"):
+                mycursor.execute("select rest.id, reserv.date_start, reserv.date_end, reserv.visitors from restaurant rest join reservation reserv on rest.id=reserv.rest_id where reserv.id="+str(res[0])+";")
+                result2=getresult(mycursor)[0]
+                print(result2)
+                it="Restaurant: "+str(result2[0]) +": "+str(result2[1])+"-"+str(result2[2])+", vis: "+str(result2[3])   
+                self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(it))
+            else:
+                self.tableView.setItem(rowPosition ,0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(str(res[1])))
+            if(args['group_by']==''):
+                self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
+                self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
 
     def btnDeleteClick(self):

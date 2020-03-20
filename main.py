@@ -22,34 +22,45 @@ def getresult(result):
 
 def search_all(args):
   result=["Nothing"]
-  search="Select e.id, e.first_name, e.last_name, e.wage from employee e"
-  i=0
 
-  if(args['reserv']!=''):
-    search+=" join emp_reserv r on e.id=r.emp_id where r.reserv_id="+args['reserv']
-    i+=1
-
-  if(i==0):
-    search+=" where e.wage between "+args['wage1']+" and "+args['wage2']
+  if(args['group_by']!=''):
+    if(args['group_by']=='reservation'):
+      search="select r.reserv_id, sum(e.wage) from employee e join emp_reserv r on r.emp_id=e.id group by r.reserv_id"
+    elif(args['group_by']=='restaurant'):
+      search="select rest_id, sum(wage) from employee group by rest_id"
+    else: 
+      search="select "+args['group_by']+", sum(wage) from employee group by "+args['group_by']
+  
   else:
-    search+=" and e.wage between "+args['wage1']+" and "+args['wage2']
+    search="Select e.id, e.first_name, e.last_name, e.wage, e.rest_id, e.position, e.gender from employee e "
+    i=0
 
-  if(args['name_sername']!=''):
-    search+=" and (e.first_name like \'"+args['name_sername']+"%\' or e.last_name like \'"+args['name_sername']+"%\') "
+    if(args['reserv']!=''):
+      search+="join emp_reserv r on e.id=r.emp_id where r.reserv_id="+args['reserv']
+      i+=1
+    if(i==0):
+      search+=" where e.wage between "+args['wage1']+" and "+args['wage2']
+    else:
+      search+=" and e.wage between "+args['wage1']+" and "+args['wage2']
 
-  if(args['rest']!=''):
-    search+=" and e.rest_id="+args['rest']
+    if(args['name_sername']!=''):
+      search+=" and (e.first_name like \'"+args['name_sername']+"%\' or e.last_name like \'"+args['name_sername']+"%\') "
 
-  if(args['gender']!=''):
-    search+=" and e.gender=\'"+args['gender']+"\'"
-    
-  if(args['position']!=''):
-    search+=" and e.position=\'"+args['position']+"\'"
+    if(args['rest']!=''):
+      search+=" and e.rest_id="+args['rest']
 
-  search+=" order by e."+args['order_by']+";"
+    if(args['gender']!=''):
+      search+=" and e.gender=\'"+args['gender']+"\'"
+      
+    if(args['position']!=''):
+      search+=" and e.position=\'"+args['position']+"\'"
+    search+=" order by e."+args['order_by']+";"
+
+ 
   print(search)
   mycursor.execute(search)
   result=getresult(mycursor)
+  print(result)
   return result
 
 # def insert(table, keys, values):
