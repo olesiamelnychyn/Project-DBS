@@ -174,6 +174,7 @@ class Ui_SearchWindow(object):
 
         self.retranslateUi(SearchWindow)
         QtCore.QMetaObject.connectSlotsByName(SearchWindow)
+        self.btnSeacrhClick()
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
