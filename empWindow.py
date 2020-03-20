@@ -11,7 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_EmployeeWindow(object):
-    def setupUi(self, EmployeeWindow):
+    def setupUi(self, EmployeeWindow, hello=0):
+        print("IDDDDD ",hello)
         EmployeeWindow.setObjectName("EmployeeWindow")
         EmployeeWindow.resize(640, 447)
         self.centralwidget = QtWidgets.QWidget(EmployeeWindow)

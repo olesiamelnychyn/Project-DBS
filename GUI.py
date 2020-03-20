@@ -27,12 +27,28 @@ class MainWin(QtWidgets.QMainWindow):
 
     def clicked_item(self):
         print("grt")
+        row=self.ui.tableView.selectionModel().selection().indexes()[0].row()
+        item_id=self.ui.tableView.item(row, 0).text()
+        print("ID "+item_id)
         self.ui = Ui_EmployeeWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self, hello=item_id)
 
     def btnAddClicked(self):
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self)
+
+
+class EmpWin(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        QtWidgets.QWidget.__init__(self, parent)
+        self.parent = parent
+        
+        self.ui = Ui_EmployeeWindow()
+        self.ui.setupUi(self,)
+        row=self.parent.tableView.selectionModel().selection().indexes()[0].row()
+        
+        # self.ui.textEmail.insertPlainText(parent.tableView.)
 
 
 # class SearchEmpWin(QtWidgets.QMainWindow):

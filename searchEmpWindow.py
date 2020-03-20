@@ -145,7 +145,7 @@ class Ui_SearchWindow(object):
         self.butDelete.setGeometry(QtCore.QRect(260, 400, 171, 31))
         self.butDelete.setObjectName("butDelete")
         self.butDelete.clicked.connect(self.btnDeleteClick)
-
+        
         # Button Add ----------------------------------------------------------
         self.butAdd = QtWidgets.QPushButton(self.centralwidget)
         self.butAdd.setGeometry(QtCore.QRect(10, 400, 171, 31))
@@ -201,7 +201,6 @@ class Ui_SearchWindow(object):
         'position':'',
         'order_by':''
         }
-  
         while (self.tableView.rowCount() > 0):
             self.tableView.removeRow(0)
         args['name_sername']=self.textSearch.toPlainText().lower()
