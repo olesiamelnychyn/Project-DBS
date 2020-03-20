@@ -31,7 +31,7 @@ class MainWin(QtWidgets.QMainWindow):
         item_id=self.ui.tableView.item(row, 0).text()
         print("ID "+item_id)
         self.ui = Ui_EmployeeWindow()
-        self.ui.setupUi(self, hello=item_id)
+        self.ui.setupUi(self, id_emp=item_id)
 
     def btnAddClicked(self):
         self.ui = Ui_EmployeeWindow()
