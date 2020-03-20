@@ -224,9 +224,9 @@ class Ui_SearchWindow(object):
             args['order_by']=self.comboBox.currentText().lower().replace(' ', '_')+" desc"
         else:
             args['order_by']=self.comboBox.currentText().lower().replace(' ', '_')
-        if(self.rbtnM.isChecked()):
+        if(self.rbtnM.isChecked() and not self.rbtnF.isChecked() ):
             args['gender']="M"
-        elif (self.rbtnF.isChecked()):
+        elif (self.rbtnF.isChecked() and not self.rbtnM.isChecked()):
             args['gender']="W"
         if(self.cboxPos.currentText()!="Choose position"):
             args['position']=self.cboxPos.currentText().lower()
@@ -246,12 +246,25 @@ class Ui_SearchWindow(object):
         
         if(args['group_by']!=''):
             # self.tableView.setColumnCount(2)
-            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Summ(Wage) by "+self.cboxGroup.currentText()+"s"))
-            self.tableView.setColumnWidth(1, 390)
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Summ(Wage)"))
+            self.tableView.setColumnWidth(0, 330)
+            self.tableView.setColumnWidth(1, 100)
+            self.butAdd.setDisabled(True)
+            self.butDelete.setDisabled(True)
+            self.tableView.setDisabled(True)
+            self.tableView.setStyleSheet("color: black")
+
         else:
+            self.butAdd.setDisabled(False)
+            self.butDelete.setDisabled(False)
+            self.tableView.setDisabled(False)
             self.tableView.setColumnCount(4)
             self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
+            self.tableView.setColumnWidth(0, 30)
             self.tableView.setColumnWidth(1, 130)
+            self.tableView.setColumnWidth(2, 130)
+            self.tableView.setColumnWidth(3, 130)
+            self.tableView.setColumnWidth(4, 130)
             self.tableView.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
             self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
             self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
