@@ -23,11 +23,17 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
+        self.ui.butAdd.clicked.connect(self.btnAddClicked)
 
     def clicked_item(self):
         print("grt")
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self)
+
+    def btnAddClicked(self):
+        self.ui = Ui_EmployeeWindow()
+        self.ui.setupUi(self)
+
 
 # class SearchEmpWin(QtWidgets.QMainWindow):
 
