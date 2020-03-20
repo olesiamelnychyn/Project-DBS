@@ -7,6 +7,7 @@ from PyQt5.QtGui import *
 from startWindow import *
 from searchEmpWindow import *
 from empWindow import *
+from PyQt5.QtWidgets import QTableWidgetItem
 
 class MainWin(QtWidgets.QMainWindow):
     
@@ -29,10 +30,13 @@ class SearchEmpWin(QtWidgets.QMainWindow):
         
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
-        
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
 
+        "here"
+        # clicked.connect(self.clicked_item)
+
     def clicked_item(self):
+        print("grt")
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self)
 
