@@ -20,12 +20,36 @@ def getresult(result):
     res.append(x)
   return res
 
-def search_all(type):
+def search_all(args):
   result=["Nothing"]
-  if(type=="employees"):
-    mycursor.execute("Select id, first_name, last_name, wage from employee")
-    result = getresult(mycursor)
-    # mydb.close()
+  search="Select e.id, e.first_name, e.last_name, e.wage from employee e"
+  i=0
+
+  if(args['reserv']!=''):
+    search+=" join emp_reserv r on e.id=r.emp_id where r.reserv_id="+args['reserv']
+    i+=1
+
+  if(i==0):
+    search+=" where e.wage between "+args['wage1']+" and "+args['wage2']
+  else:
+    search+=" and e.wage between "+args['wage1']+" and "+args['wage2']
+
+  if(args['name_sername']!=''):
+    search+=" and (e.first_name like \'"+args['name_sername']+"%\' or e.last_name like \'"+args['name_sername']+"%\') "
+
+  if(args['rest']!=''):
+    search+=" and e.rest_id="+args['rest']
+
+  if(args['gender']!=''):
+    search+=" and e.gender=\'"+args['gender']+"\'"
+    
+  if(args['position']!=''):
+    search+=" and e.position=\'"+args['position']+"\'"
+
+  search+=" order by e."+args['order_by']+";"
+  print(search)
+  mycursor.execute(search)
+  result=getresult(mycursor)
   return result
 
 # def insert(table, keys, values):
