@@ -9,7 +9,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from main import *
-
+from empWindow import *
+from GUI import *
 
 class Ui_SearchWindow(object):
     def setupUi(self, SearchWindow):
@@ -69,9 +70,10 @@ class Ui_SearchWindow(object):
         self.tableView.setColumnWidth(2, 130)
         self.tableView.setColumnWidth(3, 130)
         self.tableView.verticalHeader().hide()
-        self.tableView.setDisabled(True)
+        # self.tableView.setDisabled(True)
         self.tableView.setStyleSheet("color: black")
-
+        self.tableView.itemDoubleClicked.connect(SearchEmpWin.clicked_item)
+    
         # self.tableView.setModel(self.model)
 
         self.listViewRest = QtWidgets.QListView(self.centralwidget)
@@ -152,6 +154,12 @@ class Ui_SearchWindow(object):
             self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
             self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
+    def tab_item_one_click_event(self):
+        print("item clicked")
+        self.u
+        ui=Ui_EmployeeWindow()
+        ui=ui.setupUi(self, EmployeeWindow(self))
+        # clicked_btn_employee()
 
     def btnDeleteClick(self):
         row=self.tableView.selectionModel().selection().indexes()[0].row()

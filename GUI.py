@@ -29,7 +29,12 @@ class SearchEmpWin(QtWidgets.QMainWindow):
         
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
+        
+        self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
 
+    def clicked_item(self):
+        self.ui = Ui_EmployeeWindow()
+        self.ui.setupUi(self)
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
