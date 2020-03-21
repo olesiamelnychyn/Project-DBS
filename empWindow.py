@@ -175,12 +175,12 @@ class Ui_EmployeeWindow(object):
                 ", first_name =\'"+self.textFN.toPlainText()+
                 "\', last_name=\'"+self.textLN.toPlainText()+
                 "\', gender= \'"+m+
-                # "\', birthdate=\'"+self.dateEdit.text()+
+                "\', birthdate=\'"+str(self.dateEdit.text()).split('.')[2]+"-"+str(self.dateEdit.text()).split('.')[1]+"-"+str(self.dateEdit.text()).split('.')[0]+
                 "\', phone=\'"+self.textPhone.toPlainText()+
                 "\', e_mail=\'"+self.textEmail.toPlainText()+
                 "\', position=\'"+self.textPosition.toPlainText()+
-                # "\', wage="+str(self.sboxWage.text)+
-                "\' where id="+str(self.id_emp))
+                "\', wage="+str(self.sboxWage.text())+
+                " where id="+str(self.id_emp))
                 printresult(mycursor)
             else:
                 mycursor.execute("select MAX(id) as id from employee")
