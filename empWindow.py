@@ -164,16 +164,16 @@ class Ui_EmployeeWindow(object):
             print(self.dateEdit.text())
             if(self.id_emp != 0):
                 mycursor.execute("update employee set "+
-                "rest_id = \'"+rest_id+
-                "\', first_name =\'"+self.textFN.toPlainText()+
+                "rest_id = "+rest_id+
+                ", first_name =\'"+self.textFN.toPlainText()+
                 "\', last_name=\'"+self.textLN.toPlainText()+
                 "\', gender= \'"+m+
-                "\', birthdate=\'"+self.dateEdit.text()+
+                # "\', birthdate=\'"+self.dateEdit.text()+
                 "\', phone=\'"+self.textPhone.toPlainText()+
                 "\', e_mail=\'"+self.textEmail.toPlainText()+
                 "\', position=\'"+self.textPosition.toPlainText()+
-                "\', wage="+str(self.sboxWage.text)+
-                " where id="+str(self.id_emp))
+                # "\', wage="+str(self.sboxWage.text)+
+                "\' where id="+str(self.id_emp))
                 printresult(mycursor)
             else:
                 mycursor.execute("select MAX(id) as id from employee")
