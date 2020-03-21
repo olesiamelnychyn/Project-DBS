@@ -128,28 +128,35 @@ class Ui_EmployeeWindow(object):
 
         self.retranslateUi(EmployeeWindow)
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
-        self.Fill_employee()
+        self.Fill_employee(id_emp)
         self.butUndo.clicked.connect(self.Fill_employee)
         self.butDel.clicked.connect(self.Delete_emp)
+        print("2")
         self.butSave.clicked.connect(self.Save_employee)
+        
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
         for x in mycursor:
             item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
             self.cboxRest.addItem(item)
 
-    def Change_reservation(self):
+    def Change_reservation(self, id_emp=1):
         rest_id = str(self.cboxRest.currentText()).split(',')[3]
         self.listView.clear()
+        print("right there")
+        res3=getresult(mycursor)
+        print(res3)
         mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
-        if(mycursor.fetchone() != None):
-            res3=getresult(mycursor)
-            print(res3)
-            for x in res3:
-                self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+        # if(mycursor.fetchall() != None):
+        # res3=getresult(mycursor)
+        # print(res3)
+        for x in res3:
+            self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+        
     
     def Delete_emp(self):
         delete_employee("employee", self.id_emp)
+        print("here del")
 
     def Save_employee(self):
         if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
@@ -183,10 +190,11 @@ class Ui_EmployeeWindow(object):
                 values = [(self.id_emp, rest_id, self.textFN.toPlainText(), self.textLN.toPlainText(), m, self.dateEdit.text(), self.textPhone.toPlainText(), self.textEmail.toPlainText(), self.textPosition.toPlainText(), str(self.sboxWage.text()))]
                 mycursor.executemany(sqlinsert,values)
                 printresult(mycursor)
+            print("here save")
             mydb.commit()
 
 
-    def Fill_employee(self):
+    def Fill_employee(self, id_emp=1):
 
         if(self.id_emp != 0):
             mycursor.execute("select * from employee where id='"+str(self.id_emp)+"'; ")
@@ -208,16 +216,24 @@ class Ui_EmployeeWindow(object):
             res2=getresult(mycursor)[0]
             self.cboxRest.addItem("Capacity: "+str(res2[0])+", "+res2[1]+", "+res2[2]+", "+str(res2[3]))
             mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id!="+str(res[1]))
+
             for x in mycursor:
                 item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2]+", "+str(x[3])
                 self.cboxRest.addItem(item)
+            # res3=getresult(mycursor)
+            # print(res3)
             # mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = 1)) where reservation.rest_id = 1 ")
-            mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
-            if(mycursor.fetchone() != None):
+            # mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
+            # mycursor.execute("select reserv.id, reserv.date_start, reserv.date_end, reserv.visitors from reservation reserv join restaurant r on reserv.rest_id=r.id where r.id="+str(res[1]) )
+            # if(mycursor.fetchall() != None):
+            if(id_emp!=0):
+                mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
                 res3=getresult(mycursor)
                 print(res3)
                 for x in res3:
                     self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+                
+
         else:
             self.textFN.clear()
             self.textLN.clear()
@@ -226,6 +242,7 @@ class Ui_EmployeeWindow(object):
             self.textEmail.clear()
             self.textPosition.clear()
             self.sboxWage.clear()
+        print("here fill")
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
