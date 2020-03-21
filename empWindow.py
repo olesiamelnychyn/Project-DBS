@@ -111,15 +111,6 @@ class Ui_EmployeeWindow(object):
         self.listView = QtWidgets.QListWidget(self.centralwidget)
         self.listView.setGeometry(QtCore.QRect(290, 110, 301, 251))
         self.listView.setObjectName("listView")
-        # self.tableReserv = QtWidgets.QTableWidget(self.centralwidget)
-        # self.tableReserv.setGeometry(QtCore.QRect(290, 110, 301, 251))
-        # self.tableReserv.setObjectName("tableReserv")
-        # self.tableReserv.setColumnCount(4)
-        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
-        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Date start"))
-        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Date end"))
-        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Visitors"))
-        # self.tableReserv.setRowCount(0)
 
         self.label_9 = QtWidgets.QLabel(self.centralwidget)
         self.label_9.setGeometry(QtCore.QRect(290, 80, 91, 16))
@@ -133,10 +124,11 @@ class Ui_EmployeeWindow(object):
         self.butDel.clicked.connect(self.Delete_emp)
         self.butSave.clicked.connect(self.Save_employee)
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
-        mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
-        for x in mycursor:
-            item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
-            self.cboxRest.addItem(item)
+        if(id_emp == 0):
+            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
+            for x in mycursor:
+                item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
+                self.cboxRest.addItem(item)
 
     def Change_reservation(self):
         rest_id = str(self.cboxRest.currentText()).split(',')[3]
@@ -206,6 +198,7 @@ class Ui_EmployeeWindow(object):
             self.sboxWage.setValue(int(res[9]))
             mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id="+str(res[1]))
             res2=getresult(mycursor)[0]
+            # self.cboxRest.clear()
             self.cboxRest.addItem("Capacity: "+str(res2[0])+", "+res2[1]+", "+res2[2]+", "+str(res2[3]))
             mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id!="+str(res[1]))
             for x in mycursor:
@@ -213,11 +206,11 @@ class Ui_EmployeeWindow(object):
                 self.cboxRest.addItem(item)
             # mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = 1)) where reservation.rest_id = 1 ")
             mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
-            if(mycursor.fetchone() != None):
-                res3=getresult(mycursor)
-                print(res3)
-                for x in res3:
-                    self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+            # if(mycursor.fetchone() != None):
+            res3=getresult(mycursor)
+            print(res3)
+            for x in res3:
+                self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
         else:
             self.textFN.clear()
             self.textLN.clear()
