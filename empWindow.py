@@ -172,8 +172,8 @@ class Ui_EmployeeWindow(object):
                 "\', phone=\'"+self.textPhone.toPlainText()+
                 "\', e_mail=\'"+self.textEmail.toPlainText()+
                 "\', position=\'"+self.textPosition.toPlainText()+
-                # "\', wage="+str(self.sboxWage.text)+
-                "\' where id="+str(self.id_emp))
+                "\', wage="+str(self.sboxWage.text())+
+                " where id="+str(self.id_emp))
                 printresult(mycursor)
             else:
                 mycursor.execute("select MAX(id) as id from employee")
