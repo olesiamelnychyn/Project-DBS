@@ -177,7 +177,6 @@ class Ui_EmployeeWindow(object):
                 printresult(mycursor)
             mydb.commit()
 
-
     def Fill_employee(self):
 
         if(self.id_emp != 0):
