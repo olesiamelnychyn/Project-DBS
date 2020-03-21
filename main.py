@@ -30,6 +30,10 @@ def search_all(args):
       search="select rest_id, sum(wage) from employee group by rest_id"
     else: 
       search="select "+args['group_by']+", sum(wage) from employee group by "+args['group_by']
+    if(args['order_by']=="wage"):
+      search+=" order by sum(wage)"
+    elif(args['order_by']=="wage desc"):
+      search+=" order by sum(wage) desc"
   
   else:
     search="Select e.id, e.first_name, e.last_name, e.wage, e.rest_id, e.position, e.gender from employee e "

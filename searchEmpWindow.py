@@ -68,6 +68,7 @@ class Ui_SearchWindow(object):
         self.comboBox.addItem("First Name")
         self.comboBox.addItem("Last name")
         self.comboBox.addItem("Wage")
+        self.comboBox.addItem("Restaurant")
 
         # Check Box Asc/Desc ----------------------------------------------------------
         self.chboxDesc = QtWidgets.QCheckBox(self.centralwidget)
@@ -101,10 +102,12 @@ class Ui_SearchWindow(object):
         self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
         self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
         self.tableView.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Wage"))
+        
         self.tableView.setColumnWidth(0, 30)
         self.tableView.setColumnWidth(1, 130)
         self.tableView.setColumnWidth(2, 130)
         self.tableView.setColumnWidth(3, 130)
+        # self.tableView.setColumnWidth(4, 30)
         self.tableView.verticalHeader().hide()
         # self.tableView.setDisabled(True)
         self.tableView.setStyleSheet("color: black")
@@ -241,8 +244,7 @@ class Ui_SearchWindow(object):
             args['wage2']=self.textTo.toPlainText()
         if(self.cboxGroup.currentText()!="Choose group by"):
             args['group_by']=self.cboxGroup.currentText().lower()
-        print(args)
-        result=search_all(args)
+        
         
         if(args['group_by']!=''):
             # self.tableView.setColumnCount(2)
@@ -253,24 +255,39 @@ class Ui_SearchWindow(object):
             self.butDelete.setDisabled(True)
             self.tableView.setDisabled(True)
             self.tableView.setStyleSheet("color: black")
-
+        elif("restaurant"==args['order_by'] or "restaurant desc"==args['order_by']):
+            args['order_by']="rest_id"+args['order_by'][10:]
+            print(args['order_by'])
+            self.butAdd.setDisabled(False)
+            self.butDelete.setDisabled(False)
+            self.tableView.setDisabled(False)
+            self.tableView.setColumnCount(5)
+            self.tableView.setColumnWidth(0, 30)
+            self.tableView.setColumnWidth(1, 120)
+            self.tableView.setColumnWidth(2, 120)
+            self.tableView.setColumnWidth(3, 70)
+            self.tableView.setColumnWidth(4, 80)
+            self.tableView.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
+            self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
+            self.tableView.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Wage"))
+            self.tableView.setHorizontalHeaderItem(4, QtWidgets.QTableWidgetItem("Restaurant ID"))
         else:
             self.butAdd.setDisabled(False)
             self.butDelete.setDisabled(False)
             self.tableView.setDisabled(False)
             self.tableView.setColumnCount(4)
-            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
             self.tableView.setColumnWidth(0, 30)
             self.tableView.setColumnWidth(1, 130)
             self.tableView.setColumnWidth(2, 130)
             self.tableView.setColumnWidth(3, 130)
-            self.tableView.setColumnWidth(4, 130)
             self.tableView.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
             self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
             self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
             self.tableView.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Wage"))
-            # MainWin.ui.butAdd.clicked.connect(MainWin.btnAddClicked)
 
+        print(args)
+        result=search_all(args)
         for res in result:
             rowPosition = self.tableView.rowCount()
             self.tableView.insertRow(rowPosition)
@@ -286,12 +303,19 @@ class Ui_SearchWindow(object):
                 print(result2)
                 it="Restaurant: "+str(result2[0]) +": "+str(result2[1])+"-"+str(result2[2])+", vis: "+str(result2[3])   
                 self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(it))
+            elif(args['group_by']=="gender"):
+                if(res[0]=='M'):
+                    self.tableView.setItem(rowPosition ,0, QtWidgets.QTableWidgetItem("Male"))
+                else:
+                    self.tableView.setItem(rowPosition ,0, QtWidgets.QTableWidgetItem("Female"))
             else:
                 self.tableView.setItem(rowPosition ,0, QtWidgets.QTableWidgetItem(str(res[0])))
             self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(str(res[1])))
             if(args['group_by']==''):
                 self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
                 self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+            if("rest_id"==args['order_by'] or "rest_id desc"==args['order_by']):
+                self.tableView.setItem(rowPosition ,4, QtWidgets.QTableWidgetItem(str(res[4])))
 
 
     def btnDeleteClick(self):
