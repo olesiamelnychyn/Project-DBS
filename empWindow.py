@@ -13,8 +13,11 @@ from GUI import *
 
 
 class Ui_EmployeeWindow(object):
+
+    
     def setupUi(self, EmployeeWindow, id_emp=0):
         print("IDDDDD ", id_emp)
+        self.id_emp = id_emp
         EmployeeWindow.setObjectName("EmployeeWindow")
         EmployeeWindow.resize(640, 447)
 
@@ -93,6 +96,8 @@ class Ui_EmployeeWindow(object):
 
         self.sboxWage = QtWidgets.QSpinBox(self.centralwidget)
         self.sboxWage.setGeometry(QtCore.QRect(90, 310, 131, 31))
+        self.sboxWage.setMaximum(400000)
+        self.sboxWage.setSingleStep(100)
         self.sboxWage.setObjectName("sboxWage")
 
         self.label_8 = QtWidgets.QLabel(self.centralwidget)
@@ -100,14 +105,21 @@ class Ui_EmployeeWindow(object):
         self.label_8.setObjectName("label_8")
 
         self.cboxRest = QtWidgets.QComboBox(self.centralwidget)
-        self.cboxRest.setGeometry(QtCore.QRect(390, 20, 171, 22))
+        self.cboxRest.setGeometry(QtCore.QRect(390, 20, 191, 22))
         self.cboxRest.setObjectName("cboxRest")
 
-        self.tableReserv = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableReserv.setGeometry(QtCore.QRect(290, 110, 301, 251))
-        self.tableReserv.setObjectName("tableReserv")
-        self.tableReserv.setColumnCount(0)
-        self.tableReserv.setRowCount(0)
+        self.listView = QtWidgets.QListWidget(self.centralwidget)
+        self.listView.setGeometry(QtCore.QRect(290, 110, 301, 251))
+        self.listView.setObjectName("listView")
+        # self.tableReserv = QtWidgets.QTableWidget(self.centralwidget)
+        # self.tableReserv.setGeometry(QtCore.QRect(290, 110, 301, 251))
+        # self.tableReserv.setObjectName("tableReserv")
+        # self.tableReserv.setColumnCount(4)
+        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
+        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Date start"))
+        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Date end"))
+        # self.tableReserv.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("Visitors"))
+        # self.tableReserv.setRowCount(0)
 
         self.label_9 = QtWidgets.QLabel(self.centralwidget)
         self.label_9.setGeometry(QtCore.QRect(290, 80, 91, 16))
@@ -116,17 +128,97 @@ class Ui_EmployeeWindow(object):
 
         self.retranslateUi(EmployeeWindow)
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
+        self.Fill_employee()
+        self.butUndo.clicked.connect(self.Fill_employee)
+        self.butDel.clicked.connect(self.Delete_emp)
+        self.butSave.clicked.connect(self.Save_employee)
+        mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
+        for x in mycursor:
+            item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
+            self.cboxRest.addItem(item)
+    
+    def Delete_emp(self):
+        delete_employee("employee", self.id_emp)
 
-        if(id_emp != 0):
-            mycursor.execute("select * from employee where id='"+str(id_emp)+"'; ")
+    def Save_employee(self):
+        if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
+            and self.dateEdit.text() != "" and self.textPhone.toPlainText() != "" and self.textEmail.toPlainText() != ""
+            and self.textPosition.toPlainText() != "" and self.sboxWage.text() != ""):
+            m = ""
+            if(self.rbtnM.isChecked()):
+                m = "M" 
+            else:
+                m = "W"
+            rest_id = str(self.cboxRest.currentText()).split(',')[3]
+            print(self.dateEdit.text())
+            if(self.id_emp != 0):
+                mycursor.execute("update employee set "+
+                "rest_id = \'"+rest_id+
+                "\', first_name =\'"+self.textFN.toPlainText()+
+                "\', last_name=\'"+self.textLN.toPlainText()+
+                "\', gender= \'"+m+
+                "\', birthdate=\'"+self.dateEdit.text()+
+                "\', phone=\'"+self.textPhone.toPlainText()+
+                "\', e_mail=\'"+self.textEmail.toPlainText()+
+                "\', position=\'"+self.textPosition.toPlainText()+
+                "\', wage="+str(self.sboxWage.text)+
+                " where id="+str(self.id_emp))
+                printresult(mycursor)
+            else:
+                mycursor.execute("select MAX(id) as id from employee")
+                res=getresult(mycursor)[0]
+                self.id_emp = int(res[0]) + 1
+                sqlinsert = "insert into employee (id, rest_id, first_name, last_name, gender, birthdate, phone, e_mail, position, wage) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                values = [(self.id_emp, rest_id, self.textFN.toPlainText(), self.textLN.toPlainText(), m, self.dateEdit.text(), self.textPhone.toPlainText(), self.textEmail.toPlainText(), self.textPosition.toPlainText(), str(self.sboxWage.text()))]
+                mycursor.executemany(sqlinsert,values)
+                printresult(mycursor)
+            mydb.commit()
+
+
+    def Fill_employee(self):
+
+        if(self.id_emp != 0):
+            mycursor.execute("select * from employee where id='"+str(self.id_emp)+"'; ")
             res=getresult(mycursor)[0]
             print(res)
             self.textFN.setText(str(res[2]))
             self.textLN.setText(str(res[3]))
             if(res[4] == 'M'):
-                self.rbtnM.Check = True
+                self.rbtnM.setChecked(True)
             else:
-                self.rbtnF.Check = True
+                self.rbtnF.setChecked(True)
+            date_of_birth = str(res[5]).split("-")
+            self.dateEdit.setDate(QtCore.QDate(int(date_of_birth[0]), int(date_of_birth[1]), int(date_of_birth[2])))
+            self.textPhone.setText(str(res[6]))
+            self.textEmail.setText(str(res[7]))
+            self.textPosition.setText(str(res[8]))
+            self.sboxWage.setValue(int(res[9]))
+            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id="+str(res[1]))
+            res2=getresult(mycursor)[0]
+            self.cboxRest.addItem("Capacity: "+str(res2[0])+", "+res2[1]+", "+res2[2]+", "+str(res2[3]))
+            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id!="+str(res[1]))
+            for x in mycursor:
+                item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2]+", "+str(x[3])
+                self.cboxRest.addItem(item)
+            # mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = 1)) where reservation.rest_id = 1 ")
+            mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
+            if(mycursor.fetchone() != None):
+                res3=getresult(mycursor)
+                print(res3)
+            # # if(len(res3)>1):
+            # #     for x in res3:
+            # #         self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+            # #     # self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+            # # else:
+            # self.listView.addItem(str(res3[0])+": "+str(res3[1])+"-"+str(res3[2])+", vis: "+str(res3[3]))
+        else:
+            self.textFN.clear()
+            self.textLN.clear()
+            self.dateEdit.clear()
+            self.textPhone.clear()
+            self.textEmail.clear()
+            self.textPosition.clear()
+            self.sboxWage.clear()
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate

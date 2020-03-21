@@ -126,6 +126,10 @@ def delete_employee(table, id_value):
 # printresult(mycursor)
 # mydb.commit()
 
+# mycursor.execute('alter table emp_reserv nocheck constraint emp_id')
+# printresult(mycursor)
+# mydb.commit()
+
 # sqlinsert="INSERT INTO zip (id, city, state) VALUES(%s, %s, %s)"
 # values=[
 #   (1,'Los Angeles', 'CA'),
@@ -200,6 +204,7 @@ def delete_employee(table, id_value):
 #   (1,4),
 #   (2,5),
 #   (2,6),
+#   (2,1),
 #   (2,7),
 #   (3,8),
 #   (4,9),
