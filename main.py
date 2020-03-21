@@ -116,6 +116,12 @@ def delete_employee(table, id_value):
 # mycursor.execute("CREATE TABLE employee (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, gender char(1) NOT NULL, birthdate DATE NOT NULL, phone char(13) NOT NULL, e_mail varchar(50) NOT NULL, position varchar(30) NOT NULL, wage INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
 # mycursor.execute("CREATE TABLE emp_reserv (reserv_id INT, emp_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(emp_id) REFERENCES employee(id));")
 
+# mycursor.execute('alter table supplier modify e_mail varchar(320)')
+# mycursor.execute('alter table employee modify e_mail varchar(320)')
+# mycursor.execute('alter table zip add street varchar(512)')
+# printresult(mycursor)
+# mydb.commit()
+
 # sqlinsert="INSERT INTO zip (id, city, state) VALUES(%s, %s, %s)"
 # values=[
 #   (1,'Los Angeles', 'CA'),
