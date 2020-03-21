@@ -132,10 +132,21 @@ class Ui_EmployeeWindow(object):
         self.butUndo.clicked.connect(self.Fill_employee)
         self.butDel.clicked.connect(self.Delete_emp)
         self.butSave.clicked.connect(self.Save_employee)
+        self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
         for x in mycursor:
             item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
             self.cboxRest.addItem(item)
+
+    def Change_reservation(self):
+        rest_id = str(self.cboxRest.currentText()).split(',')[3]
+        self.listView.clear()
+        mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
+        if(mycursor.fetchone() != None):
+            res3=getresult(mycursor)
+            print(res3)
+            for x in res3:
+                self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
     
     def Delete_emp(self):
         delete_employee("employee", self.id_emp)
@@ -205,12 +216,8 @@ class Ui_EmployeeWindow(object):
             if(mycursor.fetchone() != None):
                 res3=getresult(mycursor)
                 print(res3)
-            # # if(len(res3)>1):
-            # #     for x in res3:
-            # #         self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
-            # #     # self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
-            # # else:
-            # self.listView.addItem(str(res3[0])+": "+str(res3[1])+"-"+str(res3[2])+", vis: "+str(res3[3]))
+                for x in res3:
+                    self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
         else:
             self.textFN.clear()
             self.textLN.clear()
