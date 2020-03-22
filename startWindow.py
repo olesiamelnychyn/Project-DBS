@@ -20,18 +20,38 @@ class Ui_MainWindow(object):
         self.butRest = QtWidgets.QPushButton(self.centralwidget)
         self.butRest.setGeometry(QtCore.QRect(40, 40, 131, 131))
         self.butRest.setObjectName("butRest")
+        self.butRest.setStyleSheet(" font-size: 12px;\n"
+        "  font-weight: 500;\n"
+        "color:white;\n"
+        "background-image: url(./img/btn.png);\n")
         self.butRese = QtWidgets.QPushButton(self.centralwidget)
         self.butRese.setGeometry(QtCore.QRect(410, 40, 131, 131))
         self.butRese.setObjectName("butRese")
+        self.butRese.setStyleSheet(" font-size: 12px;\n"
+        "  font-weight: 500;\n"
+        "color:white;\n"
+        "background-image: url(./img/btn.png);\n")
         self.butEmp = QtWidgets.QPushButton(self.centralwidget)
         self.butEmp.setGeometry(QtCore.QRect(220, 40, 131, 131))
         self.butEmp.setObjectName("butEmp")
+        self.butEmp.setStyleSheet(" font-size: 12px;\n"
+        "  font-weight: 500;\n"
+        "color:white;\n"
+        "background-image: url(./img/btn.png);\n")
         self.butMeal = QtWidgets.QPushButton(self.centralwidget)
         self.butMeal.setGeometry(QtCore.QRect(40, 220, 131, 131))
         self.butMeal.setObjectName("butMeal")
+        self.butMeal.setStyleSheet(" font-size: 12px;\n"
+        "  font-weight: 500;\n"
+        "color:white;\n"
+        "background-image: url(./img/btn.png);\n")
         self.butProd = QtWidgets.QPushButton(self.centralwidget)
         self.butProd.setGeometry(QtCore.QRect(220, 220, 131, 131))
         self.butProd.setObjectName("butProd")
+        self.butProd.setStyleSheet(" font-size: 12px;\n"
+        "  font-weight: 500;\n"
+        "color:white;\n"
+        "background-image: url(./img/btn.png);\n")
         self.butSupp = QtWidgets.QPushButton(self.centralwidget)
         self.butSupp.setGeometry(QtCore.QRect(410, 220, 131, 131))
         self.butSupp.setStyleSheet(" font-size: 12px;\n"

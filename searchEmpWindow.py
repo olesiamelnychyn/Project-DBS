@@ -18,9 +18,11 @@ class Ui_SearchWindow(object):
     def setupUi(self, SearchWindow):
         SearchWindow.setObjectName("SearchWindow")
         SearchWindow.resize(640, 491)
-        SearchWindow.setStyleSheet("background-color:white;")
+        SearchWindow.setStyleSheet("background:#fafafe;")
+        # SearchWindow.setStyleSheet("background: url(./img/start.png);")
         self.centralwidget = QtWidgets.QWidget(SearchWindow)
         self.centralwidget.setObjectName("centralwidget")
+        
 
         # Text Edit Search ----------------------------------------------------------
         self.textSearch = QtWidgets.QTextEdit(self.centralwidget)
@@ -28,12 +30,14 @@ class Ui_SearchWindow(object):
         self.textSearch.setStyleSheet("")
         self.textSearch.setObjectName("textSearch")
         self.textSearch.setPlaceholderText("Enter name or surname here...")
+        self.textSearch.setStyleSheet("background:white;")
 
         # Button Search ----------------------------------------------------------
         self.butSearch = QtWidgets.QPushButton(self.centralwidget)
         self.butSearch.setGeometry(QtCore.QRect(460, 450, 161, 31))
         self.butSearch.setObjectName("butSearch")
         self.butSearch.clicked.connect(self.btnSeacrhClick)
+        self.butSearch.setStyleSheet("background:#f3f3ff;")
 
         # Labels ----------------------------------------------------------
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
@@ -53,6 +57,7 @@ class Ui_SearchWindow(object):
         self.cboxPos.setGeometry(QtCore.QRect(460, 360, 161, 21))
         self.cboxPos.setObjectName("cboxPos")
         self.cboxPos.InsertPolicy(3)
+        self.cboxPos.setStyleSheet("background:white;")
         self.cboxPos.addItem("Choose position")
         mycursor.execute("select distinct position from employee")
         for x in mycursor:
@@ -69,16 +74,20 @@ class Ui_SearchWindow(object):
         self.comboBox.addItem("Last name")
         self.comboBox.addItem("Wage")
         self.comboBox.addItem("Restaurant")
+        self.comboBox.setStyleSheet("background:white;")
 
         # Check Box Asc/Desc ----------------------------------------------------------
         self.chboxDesc = QtWidgets.QCheckBox(self.centralwidget)
         self.chboxDesc.setGeometry(QtCore.QRect(580, 390, 70, 17))
         self.chboxDesc.setObjectName("chboxDesc")
+        # self.chboxDesc.setStyleSheet("background:white;")
 
         # Text Edit Restaurants ----------------------------------------------------------
         self.textRest = QtWidgets.QTextEdit(self.centralwidget)
         self.textRest.setGeometry(QtCore.QRect(460, 30, 111, 31))
         self.textRest.setObjectName("textRest")
+        self.textRest.setStyleSheet("background:white;")
+        self.textRest.setPlaceholderText("Restaurant id")
         
         # Labels ----------------------------------------------------------
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
@@ -92,17 +101,19 @@ class Ui_SearchWindow(object):
         self.butRestS.setText("")
         self.butRestS.setObjectName("butRestS")
         self.butRestS.clicked.connect(self.btnRest)
+        # self.butRestS.setStyleSheet("background:white;")
 
         # Main Table ----------------------------------------------------------
         self.tableView = QtWidgets.QTableWidget(self.centralwidget)
         self.tableView.setGeometry(QtCore.QRect(10, 50, 421, 391))
         self.tableView.setObjectName("tableView")
+        self.tableView.setStyleSheet("background: white;")
+        # self.tableView.autoFillBackground()
         self.tableView.setColumnCount(4)
         self.tableView.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
         self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("First name"))
         self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Last name"))
         self.tableView.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Wage"))
-        
         self.tableView.setColumnWidth(0, 30)
         self.tableView.setColumnWidth(1, 130)
         self.tableView.setColumnWidth(2, 130)
@@ -117,11 +128,14 @@ class Ui_SearchWindow(object):
         self.listViewRest.setGeometry(QtCore.QRect(460, 70, 161, 41))
         self.listViewRest.setObjectName("listViewRest")
         self.listViewRest.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.listViewRest.setStyleSheet("background:white;")
 
         # Text Edit Reservations ----------------------------------------------------------
         self.textReserv = QtWidgets.QTextEdit(self.centralwidget)
         self.textReserv.setGeometry(QtCore.QRect(460, 140, 111, 31))
         self.textReserv.setObjectName("textReserv")
+        self.textReserv.setStyleSheet("background:white;")
+        self.textReserv.setPlaceholderText("Reservation id")
 
         # Button Search Reservations ----------------------------------------------------------
         self.butResS = QtWidgets.QPushButton(self.centralwidget)
@@ -130,6 +144,7 @@ class Ui_SearchWindow(object):
         self.butResS.setText("")
         self.butResS.setObjectName("butResS")
         self.butResS.clicked.connect(self.btnReserv)
+        # self.butResS.setStyleSheet("background:white;")
         
 
         # List View Reservations ----------------------------------------------------------
@@ -137,7 +152,8 @@ class Ui_SearchWindow(object):
         self.listViewReserv.setGeometry(QtCore.QRect(460, 180, 161, 61))
         self.listViewReserv.setObjectName("listViewReserv")
         # self.listViewReserv.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.listViewReserv.setStyleSheet("QScrollBar:horizontal{ border: none; background-color: rgba(255,255,255,0);width: 10px;margin: 0px 0px 0px 5px;}")
+        # self.listViewReserv.setStyleSheet("QScrollBar:horizontal{ border: none; background-color: rgba(255,255,255,0);width: 10px;margin: 0px 0px 0px 5px;}")
+        self.listViewReserv.setStyleSheet("background:white;")
 
         # Labels ----------------------------------------------------------
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
@@ -149,11 +165,13 @@ class Ui_SearchWindow(object):
         self.butDelete.setGeometry(QtCore.QRect(260, 450, 171, 31))
         self.butDelete.setObjectName("butDelete")
         self.butDelete.clicked.connect(self.btnDeleteClick)
+        self.butDelete.setStyleSheet("background:#f9dbca;")
         
         # Button Add ----------------------------------------------------------
         self.butAdd = QtWidgets.QPushButton(self.centralwidget)
         self.butAdd.setGeometry(QtCore.QRect(10, 450, 171, 31))
         self.butAdd.setObjectName("butAdd")
+        self.butAdd.setStyleSheet("background:#d4f9ca;")
 
         # Labels ----------------------------------------------------------
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -164,6 +182,7 @@ class Ui_SearchWindow(object):
         self.textFrom = QtWidgets.QTextEdit(self.centralwidget)
         self.textFrom.setGeometry(QtCore.QRect(520, 260, 101, 31))
         self.textFrom.setObjectName("textFrom")
+        self.textFrom.setStyleSheet("background:white;")
 
         # Labels ----------------------------------------------------------
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
@@ -174,11 +193,13 @@ class Ui_SearchWindow(object):
         self.textTo = QtWidgets.QTextEdit(self.centralwidget)
         self.textTo.setGeometry(QtCore.QRect(520, 300, 101, 31))
         self.textTo.setObjectName("textTo")
+        self.textTo.setStyleSheet("background:white;")
 
         # SELECT GROUP BY ----------------------------------------------------------
         self.cboxGroup = QtWidgets.QComboBox(self.centralwidget)
         self.cboxGroup.setGeometry(QtCore.QRect(460, 420, 161, 22))
         self.cboxGroup.setObjectName("cboxGroup")
+        self.cboxGroup.setStyleSheet("background:white;")
         self.cboxGroup.addItem("Choose group by")
         self.cboxGroup.addItem("Restaurant")
         self.cboxGroup.addItem("Reservation")
@@ -316,15 +337,25 @@ class Ui_SearchWindow(object):
                 self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
             if("rest_id"==args['order_by'] or "rest_id desc"==args['order_by']):
                 self.tableView.setItem(rowPosition ,4, QtWidgets.QTableWidgetItem(str(res[4])))
+        color = QColor(220, 220, 220)
+        color2 = QColor(254, 253, 253)
+        for j in range(self.tableView.columnCount()):
+            for row in range(self.tableView.rowCount()):
+                if(row % 2 == 0 ):
+                    self.tableView.item(row, j).setBackground(color)
+                else:
+                    self.tableView.item(row, j).setBackground(color2)
+                
 
 
     def btnDeleteClick(self):
-        row=self.tableView.selectionModel().selection().indexes()[0].row()
-        item_id=self.tableView.item(row, 0).text()
-        delete_employee("employee", item_id)
-        while (self.tableView.rowCount() > 0):
-            self.tableView.removeRow(0)
-        self.btnSeacrhClick()
+        if(len(self.tableView.selectionModel().selection().indexes())!=0):
+            row=self.tableView.selectionModel().selection().indexes()[0].row()
+            item_id=self.tableView.item(row, 0).text()
+            delete_employee("employee", item_id)
+            while (self.tableView.rowCount() > 0):
+                self.tableView.removeRow(0)
+            self.btnSeacrhClick()
         # result = search_all()
         # for res in result:
         #     rowPosition = self.tableView.rowCount()

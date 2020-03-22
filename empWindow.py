@@ -93,7 +93,7 @@ class Ui_EmployeeWindow(object):
         self.butDel = QtWidgets.QPushButton(self.centralwidget)
         self.butDel.setGeometry(QtCore.QRect(460, 400, 131, 31))
         self.butDel.setObjectName("butDel")
-
+        
         self.sboxWage = QtWidgets.QSpinBox(self.centralwidget)
         self.sboxWage.setGeometry(QtCore.QRect(90, 310, 131, 31))
         self.sboxWage.setMaximum(400000)
