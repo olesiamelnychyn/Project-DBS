@@ -127,7 +127,9 @@ class Ui_EmployeeWindow(object):
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         if(id_emp == 0):
             mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
-            for x in mycursor:
+            res3=getresult(mycursor)
+            print(res3)
+            for x in res3:
                 item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
                 self.cboxRest.addItem(item)
 
@@ -135,9 +137,9 @@ class Ui_EmployeeWindow(object):
         rest_id = str(self.cboxRest.currentText()).split(',')[3]
         self.listView.clear()
         print("right there")
+        mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
         res3=getresult(mycursor)
         print(res3)
-        mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
         # if(mycursor.fetchall() != None):
         # res3=getresult(mycursor)
         # print(res3)
