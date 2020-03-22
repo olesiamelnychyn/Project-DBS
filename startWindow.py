@@ -37,8 +37,7 @@ class Ui_MainWindow(object):
         self.butSupp.setStyleSheet(" font-size: 12px;\n"
 "  font-weight: 500;\n"
 "color:white;\n"
-"background-image: url(btn.png);\n"
-"border-radius:5px;")
+"background-image: url(./img/btn.png);\n")
         self.butSupp.setObjectName("butSupp")
         MainWindow.setCentralWidget(self.centralwidget)
 
