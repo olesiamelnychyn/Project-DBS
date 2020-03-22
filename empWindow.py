@@ -121,7 +121,7 @@ class Ui_EmployeeWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.Fill_employee()
         self.butUndo.clicked.connect(self.Fill_employee)
-        self.butDel.clicked.connect(self.Delete_emp)
+        
         self.butSave.clicked.connect(self.Save_employee)
         
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
@@ -147,8 +147,7 @@ class Ui_EmployeeWindow(object):
             self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
         
     
-    def Delete_emp(self):
-        delete_employee("employee", self.id_emp)
+    
 
     def Save_employee(self):
         if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
