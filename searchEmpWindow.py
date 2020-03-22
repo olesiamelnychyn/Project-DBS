@@ -324,14 +324,15 @@ class Ui_SearchWindow(object):
         delete_employee("employee", item_id)
         while (self.tableView.rowCount() > 0):
             self.tableView.removeRow(0)
-        result = search_all("employees")
-        for res in result:
-            rowPosition = self.tableView.rowCount()
-            self.tableView.insertRow(rowPosition)
-            self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
-            self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
-            self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
-            self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+        self.btnSeacrhClick()
+        # result = search_all()
+        # for res in result:
+        #     rowPosition = self.tableView.rowCount()
+        #     self.tableView.insertRow(rowPosition)
+        #     self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+        #     self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+        #     self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
+        #     self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
     def btnRest(self):
         self.listViewRest.clear()
