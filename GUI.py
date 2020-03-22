@@ -32,12 +32,13 @@ class MainWin(QtWidgets.QMainWindow):
         print("ID "+item_id)
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self, id_emp=item_id)
-        self.ui.butDel.clicked.connect(self.Delete_emp)
+        self.ui.butDel.clicked.connect(self.clicked_btn_employee)
 
     def Delete_emp(self):
         delete_employee("employee", self.ui.id_emp)
-        self.ui = Ui_SearchWindow()
-        self.ui.setupUi(self)
+        self.clicked_btn_employee()
+        # self.ui = Ui_SearchWindow()
+        # self.ui.setupUi(self)
 
     def btnAddClicked(self):
         self.ui = Ui_EmployeeWindow()
