@@ -122,15 +122,17 @@ class Ui_EmployeeWindow(object):
         self.Fill_employee()
         self.butUndo.clicked.connect(self.Fill_employee)
         self.butDel.clicked.connect(self.Delete_emp)
-        print("2")
+        # print("2")
         self.butSave.clicked.connect(self.Save_employee)
         
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         if(id_emp == 0):
             mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
-            for x in mycursor:
-                item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
-                self.cboxRest.addItem(item)
+            res3=getresult(mycursor)
+            for y in res3:
+                for x in y:
+                    item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
+                    self.cboxRest.addItem(item)
 
     def Change_reservation(self, id_emp=1):
         rest_id = str(self.cboxRest.currentText()).split(',')[3]
@@ -148,7 +150,7 @@ class Ui_EmployeeWindow(object):
     
     def Delete_emp(self):
         delete_employee("employee", self.id_emp)
-        print("here del")
+        # print("here del")
 
     def Save_employee(self):
         if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
@@ -182,7 +184,7 @@ class Ui_EmployeeWindow(object):
                 values = [(self.id_emp, rest_id, self.textFN.toPlainText(), self.textLN.toPlainText(), m, self.dateEdit.text(), self.textPhone.toPlainText(), self.textEmail.toPlainText(), self.textPosition.toPlainText(), str(self.sboxWage.text()))]
                 mycursor.executemany(sqlinsert,values)
                 printresult(mycursor)
-            print("here save")
+            # print("here save")
             mydb.commit()
 
     def Fill_employee(self):
@@ -227,7 +229,7 @@ class Ui_EmployeeWindow(object):
             self.textEmail.clear()
             self.textPosition.clear()
             self.sboxWage.clear()
-        print("here fill")
+        # print("here fill")
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
