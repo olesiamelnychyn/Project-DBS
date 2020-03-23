@@ -170,6 +170,7 @@ class Ui_EmployeeWindow(object):
                 " where id="+str(self.id_emp))
                 printresult(mycursor)
             else:
+                print("add new")
                 mycursor.execute("select MAX(id) as id from employee")
                 res=getresult(mycursor)[0]
                 self.id_emp = int(res[0]) + 1

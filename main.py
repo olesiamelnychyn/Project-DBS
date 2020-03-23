@@ -89,7 +89,7 @@ def delete_employee(table, id_value):
   sqlDelete="Delete from employee where id="+id_value+";"
   mycursor.execute(sql_del1)
   mycursor.execute(sqlDelete)
-  # mydb.commit()
+  mydb.commit()
   print(sqlDelete)
   
 
