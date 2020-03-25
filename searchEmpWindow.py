@@ -41,7 +41,7 @@ class Ui_SearchWindow(object):
 
         # Labels ----------------------------------------------------------
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(460, 210, 121, 16))
+        self.label_3.setGeometry(QtCore.QRect(460, 240, 121, 16))
         self.label_3.setObjectName("label_3")
 
         # Radio Buttons Male/Female ----------------------------------------------------------
@@ -339,12 +339,12 @@ class Ui_SearchWindow(object):
                 self.tableView.setItem(rowPosition ,4, QtWidgets.QTableWidgetItem(str(res[4])))
         color = QColor(220, 220, 220)
         color2 = QColor(254, 253, 253)
-        for j in range(self.tableView.columnCount()):
-            for row in range(self.tableView.rowCount()):
-                if(row % 2 == 0 ):
-                    self.tableView.item(row, j).setBackground(color)
-                else:
-                    self.tableView.item(row, j).setBackground(color2)
+        # for j in range(self.tableView.columnCount()):
+        #     for row in range(self.tableView.rowCount()):
+        #         if(row % 2 == 0 ):
+        #             self.tableView.item(row, j).setBackground(color)
+        #         else:
+        #             self.tableView.item(row, j).setBackground(color2)
                 
 
 
