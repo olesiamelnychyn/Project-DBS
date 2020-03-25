@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from startWindow import *
 from searchEmpWindow import *
+from searchSuppWindow import *
 from empWindow import *
 from PyQt5.QtWidgets import QTableWidgetItem
 
@@ -18,6 +19,11 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.butEmp.clicked.connect(self.clicked_btn_employee)
+        self.ui.butSupp.clicked.connect(self.clicked_supplier)
+    
+    def clicked_supplier(self):
+        self.ui = Ui_SuppWindow()
+        self.ui.setupUi(self)
         
     def clicked_btn_employee(self):
         self.ui = Ui_SearchWindow()

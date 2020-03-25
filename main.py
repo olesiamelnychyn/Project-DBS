@@ -67,6 +67,17 @@ def search_all(args):
   print(result)
   return result
 
+def search_supp(args):
+  result=["Nothing"]
+  if(args==''):
+    search= "Select * from supplier"
+  else:
+    search= "Select * from supplier where title like \'"+args+"%\';"
+  print(search)
+  mycursor.execute(search)
+  result=getresult(mycursor)
+  print(result)
+  return result
 # def insert(table, keys, values):
 #   sqlinsert="insert into "+table+" ("
 #   for i in range(0, len(keys)):
@@ -202,6 +213,20 @@ def delete_employee(table, id_value):
 # printresult(mycursor)
 # mycursor.execute('desc Zip_code')
 
-
+# sqlinsert="INSERT INTO supplier (title, phone, e_mail) VALUES(%s, %s, %s)"
+# values=[
+#   ("Grandpa\'s garden", "+1415908678", "grandpa@supp.com"),
+#   ("World of vegetables", "+1415908678", "vegetable@supp.com"),
+#   ("Fruits", "+141565478", "fruit@supp.com"),
+#   ("Be vegan", "+1415890234", "vegan@supp.com"),
+#   ("Meet meat", "+1415123786", "meat@supp.com"),
+#   ("Sweet life", "+1415765845", "sweets@supp.com"),
+#   ("Seaworld", "+1415234567", "sea@supp.com"),
+#   ("Milk way", "+1415987654", "milky@supp.com"),
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from supplier')
+# printresult(mycursor)
+# mydb.commit()
 
 

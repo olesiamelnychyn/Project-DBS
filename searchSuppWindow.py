@@ -8,12 +8,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from main import *
 
 
-class Ui_SearchWindow(object):
+class Ui_SuppWindow(object):
     def setupUi(self, SearchWindow):
         SearchWindow.setObjectName("SearchWindow")
         SearchWindow.resize(640, 491)
+        SearchWindow.setStyleSheet("background: white")
         self.centralwidget = QtWidgets.QWidget(SearchWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textSearch = QtWidgets.QTextEdit(self.centralwidget)
@@ -32,8 +34,18 @@ class Ui_SearchWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 50, 421, 431))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
+        self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Title"))
+        self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Phone"))
+        self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("E-mail"))
         self.tableWidget.setRowCount(0)
+        self.tableWidget.verticalHeader().hide()
+        self.tableWidget.setColumnWidth(0, 30)
+        self.tableWidget.setColumnWidth(1, 145)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 145)
+
         self.textTittle = QtWidgets.QTextEdit(self.centralwidget)
         self.textTittle.setGeometry(QtCore.QRect(520, 50, 104, 31))
         self.textTittle.setObjectName("textTittle")
@@ -59,6 +71,10 @@ class Ui_SearchWindow(object):
 
         self.retranslateUi(SearchWindow)
         QtCore.QMetaObject.connectSlotsByName(SearchWindow)
+        self.fill()
+        self.butSearch.clicked.connect(self.search)
+        self.butAdd.clicked.connect(self.add)
+
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -71,12 +87,41 @@ class Ui_SearchWindow(object):
         self.label_3.setText(_translate("SearchWindow", "E-mail"))
         self.butClear.setText(_translate("SearchWindow", "Clear"))
 
+    def search(self):
+        args=self.textSearch.toPlainText()
+        print(args)
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
+        result = search_supp(args)
+        for res in result:
+            rowPosition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowPosition)
+            self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
+            self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+
+
+    def fill(self):
+        result = search_supp('')
+        for res in result:
+            rowPosition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowPosition)
+            self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
+            self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+
+    def add(self):
+        title=self.textTittle.toPlainText()
+        # if(title==''):
+        #     self.textTittle.se
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     SearchWindow = QtWidgets.QMainWindow()
-    ui = Ui_SearchWindow()
+    ui = Ui_SuppWindow()
     ui.setupUi(SearchWindow)
     SearchWindow.show()
     sys.exit(app.exec_())
