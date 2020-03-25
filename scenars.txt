@@ -1,0 +1,28 @@
+Scenar 1:
+- Manazment zamestancov.
+- Mozeme pozriet vsetkych zamestancov ale aj jedneho.
+- Je mozne filtrovat vyhladavanie podla: restauracii(pomocou tabulky Restaurants), rezervacii.
+Scenar 2:
+- Manazment produktu
+- Mozeme pozriet zoznam produktov ako aj ich pocet(kolko krat sa vyskytnu v meals)
+- Mozeme pozriet najviac potrebne produkty
+- Mozeme zoradit produkty podla dodavatelov
+- Mozeme pozriet zoznam produktov pre kazdu restauraciu rozdelne
+- Mozeme pozriet zoznam produktov pre konkretnu rezervaciu(pripravenie do rezervacie)
+Scenar 3:
+- Manazment jediel.
+- Manazment objednavok
+- Mozeme pozriet vsetky mozne jedla v restauraciach ale aj jedne.
+- Mozeme pozriet ingridienty konkretneho jedla pomocou tabulky Products.
+- Mozeme filtrovat vyhladavanie podla: restauracii, rezervacii.
+- Mozeme vypocitat zisk a naklady na pripravenie.
+- Mozeme urcit Suppliers, ktore musime skontaktovat aby pripravit konkratne jedlo.
+Scenar 4:
+- Mozeme pozriet vsetky rezervacie v systeme ale aj jednu konkretnu.
+- Pre kazdu rezervaciu su docasne urcene menu, skupina zamestancov, ktora bude nad tym pracovat. Teda je mozne pouzivat tabulku takto: pozriet menu; pozriet skupinu zamestancov; pozriet celkovu cenu pomocou Meals, kde uchovana cena kazdeho jedla.
+- Manazment rezervacii.
+Scenar 5:
+- Mozeme pridat, menit, vymazat pobocku nasej sieti.
+- Mozeme pozriet vsetky restauracie ale aj jednu.
+- Mozeme pozriet menu kazdej restauracie, rezervacii, zamestancov.
+- Tak isto vypocitat debit a credit pomocou tabuliek Orders a Reservation a Meals a Products (debit ako nakupy od Supliers).
