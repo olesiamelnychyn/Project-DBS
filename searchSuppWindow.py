@@ -74,7 +74,9 @@ class Ui_SuppWindow(object):
         self.fill()
         self.butSearch.clicked.connect(self.search)
         self.butAdd.clicked.connect(self.add)
-
+        self.butClear.clicked.connect(self.clear)
+        self.tableWidget.clicked.connect(self.item_supp)
+        self.butDelete.clicked.connect(self.delete)
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -114,8 +116,48 @@ class Ui_SuppWindow(object):
 
     def add(self):
         title=self.textTittle.toPlainText()
-        # if(title==''):
-        #     self.textTittle.se
+        if(title==''):
+            self.textTittle.setText("Enter title!")
+            return 
+        phone=self.textPhone.toPlainText()
+        if(len(phone)!=13):
+            self.textPhone.setText("Phone must contain 13 numbers!")
+            return
+        email=self.textEdit_3.toPlainText()
+        if(email==''):
+            self.textEdit_3.setText("Enter e-mail!")
+            return
+        add_supp(title, phone, email)
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
+        self.fill()
+        self.clear()
+    
+    def clear(self):
+        self.textTittle.setText("")
+        self.textPhone.setText("")
+        self.textEdit_3.setText("")
+    
+    def item_supp(self):
+        row=self.tableWidget.selectionModel().selection().indexes()[0].row()
+        item_id=self.tableWidget.item(row, 0).text()
+        print("ID "+item_id)
+        mycursor.execute("select * from supplier where id="+item_id)
+        result=getresult(mycursor)[0]
+        self.textTittle.setText(result[1])
+        self.textPhone.setText(result[2])
+        self.textEdit_3.setText(result[3])
+    
+    def delete(self):
+        row=self.tableWidget.selectionModel().selection().indexes()[0].row()
+        item_id=self.tableWidget.item(row, 0).text()
+        print("ID "+item_id)
+        mycursor.execute("delete from supplier where id="+item_id)
+        mydb.commit()
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
+        self.fill()
+
 
 if __name__ == "__main__":
     import sys

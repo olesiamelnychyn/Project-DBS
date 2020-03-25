@@ -78,6 +78,12 @@ def search_supp(args):
   result=getresult(mycursor)
   print(result)
   return result
+
+def add_supp(title, phone, email):
+  insert="Insert into supplier (title, phone, e_mail) values(\""+title+"\",\""+phone+"\",\""+email+"\");"
+  print(insert)
+  mycursor.execute(insert)
+  mydb.commit()
 # def insert(table, keys, values):
 #   sqlinsert="insert into "+table+" ("
 #   for i in range(0, len(keys)):
