@@ -121,8 +121,7 @@ class Ui_EmployeeWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.Fill_employee()
         self.butUndo.clicked.connect(self.Fill_employee)
-        
-        self.butSave.clicked.connect(self.Save_employee)
+        # self.butSave.clicked.connect(self.Save_employee)
         
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         if(id_emp == 0):
@@ -146,9 +145,6 @@ class Ui_EmployeeWindow(object):
         for x in res3:
             self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
         
-    
-    
-
     def Save_employee(self):
         if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
             and self.dateEdit.text() != "" and self.textPhone.toPlainText() != "" and self.textEmail.toPlainText() != ""
@@ -174,6 +170,7 @@ class Ui_EmployeeWindow(object):
                 " where id="+str(self.id_emp))
                 printresult(mycursor)
             else:
+                print("add new")
                 mycursor.execute("select MAX(id) as id from employee")
                 res=getresult(mycursor)[0]
                 self.id_emp = int(res[0]) + 1

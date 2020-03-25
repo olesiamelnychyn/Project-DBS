@@ -32,10 +32,17 @@ class MainWin(QtWidgets.QMainWindow):
         print("ID "+item_id)
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self, id_emp=item_id)
-        self.ui.butDel.clicked.connect(self.clicked_btn_employee)
+        self.ui.butDel.clicked.connect(self.Delete_emp)
+        self.ui.butSave.clicked.connect(self.Save_employee)
+
+    def Save_employee(self):
+        print("here I am")
+        self.ui.Save_employee()
+        self.clicked_btn_employee()
 
     def Delete_emp(self):
-        delete_employee("employee", self.ui.id_emp)
+        if(self.ui.id_emp != 0):
+            delete_employee("employee", self.ui.id_emp)
         self.clicked_btn_employee()
         # self.ui = Ui_SearchWindow()
         # self.ui.setupUi(self)
@@ -43,6 +50,8 @@ class MainWin(QtWidgets.QMainWindow):
     def btnAddClicked(self):
         self.ui = Ui_EmployeeWindow()
         self.ui.setupUi(self)
+        self.ui.butDel.clicked.connect(self.Delete_emp)
+        self.ui.butSave.clicked.connect(self.Save_employee)
 
 
 class EmpWin(QtWidgets.QMainWindow):

@@ -89,55 +89,38 @@ def delete_employee(table, id_value):
   sqlDelete="Delete from employee where id="+id_value+";"
   mycursor.execute(sql_del1)
   mycursor.execute(sqlDelete)
-  # mydb.commit()
+  mydb.commit()
   print(sqlDelete)
   
 
-  
+# mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
+# mycursor.execute("drop table product; drop table supplier; drop table cheque; drop table meal;")
+# mycursor.execute("drop table reservation; drop table employee; drop table restaurant; drop table zip;")
+# mydb.commit()
 
-# mycursor.execute("CREATE TABLE gregs_list (last_name VARCHAR(20) NOT NULL, first_name varchar(20) NOT NULL, gender char(1) NOT NULL, email varchar(100) NOT NULL, phone char(10) NOT NULL, birthday date NOT NULL, profession varchar(20) NOT NULL, location varchar(20) NOT NULL, interests varchar(100) NOT NULL, status varchar(10) NOT NULL)")
-# sqlinsert="Insert Into gregs_list Values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-# values=[
-#   ('Quill', 'Peter', 'M', 'quillPeter@list.com', '0508765234','1989-06-13','Teacher', 'New-York, NY', 'books, art, animals', 'married'),
-#   ('Grant', 'Emma', 'F', 'grantEmma@list.com', '0509876781', '1995-07-27', 'Actor','Texas, TX', 'animals, music, sport', 'free'),
-#   ('Williams', 'John', 'M', 'williamsJohn@list.com', '0504567123','1993-09-17', 'Programmer', 'Chicago, CH','sport, programming, coffee', 'free'),
-#   ('Hamilton','Caroline', 'F', 'hamiltonCaroline@list.com', '0502387123', '1992-08-05', 'Doctor', 'Los-Angeles, LA', 'books, cooking, horses', 'married')
-# ]
-# mycursor.executemany(sqlinsert,values)
 
-# mycursor.execute("DELETE FROM reservation")
-
-# mycursor.execute("CREATE TABLE zip (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, city varchar(40) NOT NULL, state char(2) NOT NULL);")
+# mycursor.execute("CREATE TABLE zip (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, city varchar(40) NOT NULL, state char(2) NOT NULL, street varchar(512), code varchar(10));")
 # mycursor.execute("CREATE TABLE restaurant (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, zip INT, capacity INT NOT NULL, FOREIGN KEY(zip) REFERENCES zip(id));")
 # mycursor.execute("CREATE TABLE meal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, price DECIMAL(2,2), prep_time TIME);")
-# mycursor.execute("CREATE TABLE meal_rest (rest_id INT, meal_id INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
+# mycursor.execute("CREATE TABLE meal_rest (id int not null auto_increment primary key, rest_id INT, meal_id INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE cheque (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, meal_id INT, amount INT, date DATETIME, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
-# mycursor.execute("CREATE TABLE supplier (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(30), phone CHAR(13), e_mail VARCHAR(40));")
+# mycursor.execute("CREATE TABLE supplier (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(30), phone CHAR(13), e_mail varchar(320));")
 # mycursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, price DECIMAL(2,2), supp_id INT, FOREIGN KEY(supp_id) REFERENCES supplier(id));")
-# mycursor.execute("CREATE TABLE meal_product (meal_id INT, prod_id INT, FOREIGN KEY(prod_id) REFERENCES product(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
+# mycursor.execute("CREATE TABLE meal_product (id int not null auto_increment primary key, meal_id INT, prod_id INT, FOREIGN KEY(prod_id) REFERENCES product(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE reservation (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, date_start DATETIME, date_end DATETIME, visitors INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
-# mycursor.execute("CREATE TABLE meal_reserv (reserv_id INT, meal_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
-# mycursor.execute("CREATE TABLE employee (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, gender char(1) NOT NULL, birthdate DATE NOT NULL, phone char(13) NOT NULL, e_mail varchar(50) NOT NULL, position varchar(30) NOT NULL, wage INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
-# mycursor.execute("CREATE TABLE emp_reserv (reserv_id INT, emp_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(emp_id) REFERENCES employee(id));")
-
-# mycursor.execute('alter table supplier modify e_mail varchar(320)')
-# mycursor.execute('alter table employee modify e_mail varchar(320)')
-# mycursor.execute('alter table zip add street varchar(512)')
-# printresult(mycursor)
+# mycursor.execute("CREATE TABLE meal_reserv (id int not null auto_increment primary key, reserv_id INT, meal_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
+# mycursor.execute("CREATE TABLE employee (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, gender char(1) NOT NULL, birthdate DATE NOT NULL, phone char(13) NOT NULL, e_mail varchar(320) NOT NULL, position varchar(30) NOT NULL, wage INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
+# mycursor.execute("CREATE TABLE emp_reserv (id int not null auto_increment primary key, reserv_id INT, emp_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(emp_id) REFERENCES employee(id));")
 # mydb.commit()
 
-# mycursor.execute('alter table emp_reserv nocheck constraint emp_id')
-# printresult(mycursor)
-# mydb.commit()
-
-# sqlinsert="INSERT INTO zip (id, city, state) VALUES(%s, %s, %s)"
+# sqlinsert="INSERT INTO zip (id, city, state, street, code) VALUES(%s, %s, %s, %s, %s)"
 # values=[
-#   (1,'Los Angeles', 'CA'),
-#   (2,'Miami', 'FL'),
-#   (3,'New York', 'NY'),
-#   (4,'Washington', 'DC'),
-#   (5,'Boston', 'MA'),
-#   (6,'Chicago', 'IL')
+#   (1,'Los Angeles', 'CA', 'W 8th St', '90014'),
+#   (2,'Miami', 'FL', 'NW 17th Ave', '33142'),
+#   (3,'New York', 'NY', 'Atlantic Ave', '11416'),
+#   (4,'Washington', 'DC', '14th St NW', '20010'),
+#   (5,'Boston', 'MA', 'Harrison Ave', '02118'),
+#   (6,'Chicago', 'IL', 'S Halsted St', '60608')
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from zip')
@@ -196,7 +179,7 @@ def delete_employee(table, id_value):
 # printresult(mycursor)
 # mydb.commit()
 
-# sqlinsert="INSERT INTO emp_reserv VALUES(%s, %s)"
+# sqlinsert="INSERT INTO emp_reserv (reserv_id, emp_id) VALUES(%s, %s)"
 # values=[
 #   (1,1),
 #   (1,2),
