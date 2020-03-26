@@ -8,12 +8,15 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import GUI
+from main import *
 
 
 class Ui_SearchMeal(object):
     def setupUi(self, SearchWindow):
         SearchWindow.setObjectName("SearchWindow")
         SearchWindow.resize(640, 491)
+        SearchWindow.setStyleSheet("background:#fafafe;")
         self.centralwidget = QtWidgets.QWidget(SearchWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textSearch = QtWidgets.QTextEdit(self.centralwidget)
@@ -58,14 +61,30 @@ class Ui_SearchMeal(object):
         self.textToPrice = QtWidgets.QTextEdit(self.centralwidget)
         self.textToPrice.setGeometry(QtCore.QRect(510, 210, 101, 31))
         self.textToPrice.setObjectName("textToPrice")
+
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 50, 421, 391))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
+        self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Title"))
+        self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Preraration time"))
+        self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Price"))
+        self.tableWidget.setColumnWidth(0, 30)
+        self.tableWidget.setColumnWidth(1, 130)
+        self.tableWidget.setColumnWidth(2, 130)
+        self.tableWidget.setColumnWidth(3, 130)
+        self.tableWidget.verticalHeader().hide()
         self.tableWidget.setRowCount(0)
+
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(460, 360, 101, 22))
         self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("Choose order")
+        self.comboBox.addItem("Title")
+        self.comboBox.addItem("Price")
+        self.comboBox.addItem("Preparation time")
+
         self.chboxDesc = QtWidgets.QCheckBox(self.centralwidget)
         self.chboxDesc.setGeometry(QtCore.QRect(570, 360, 70, 17))
         self.chboxDesc.setObjectName("chboxDesc")
@@ -92,6 +111,8 @@ class Ui_SearchMeal(object):
         self.retranslateUi(SearchWindow)
         QtCore.QMetaObject.connectSlotsByName(SearchWindow)
 
+        self.fill()
+
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
         SearchWindow.setWindowTitle(_translate("SearchWindow", "MainWindow"))
@@ -107,7 +128,38 @@ class Ui_SearchMeal(object):
         self.label_6.setText(_translate("SearchWindow", "Choose preparation time"))
         self.label_7.setText(_translate("SearchWindow", "to"))
 
+    def fill(self):
+        result=search_meals(" ")
+        for res in result:
+            rowPosition = self.tableView.rowCount()
+            self.tableView.insertRow(rowPosition)
+            self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
+            self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+        
+    def search_meals(self):
+        args={'title':'',
+        'price_from':'',
+        'price_to':'',
+        'prep_from':'',
+        'prep_to':'',
+        'product_in':'',
+        'order_by':'',
+        'group_by':''}
+        args['title']=self.textSearch.toPlainText()
+        args['price_from']=self.textFromPrice.toPlainText()
+        args['price_to']=self.textToPrice.toPlainText()
+        args['prep_from']=self.textFromTime.toPlainText()
+        args['prep_to']=self.textToTime.toPlainText()
+        args['product_in']=self.textProd.toPlainText()
+        if(self.comboBox.toPlainText()!="Choose order"):
+            args['order_by']=self.comboBox.toPlainText()
+        if(self.cboxGroup.toPlainText()!="Choose group by"):
+            args['order_by']=self.cboxGroup.toPlainText()
+        print(args)
 
+        
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
