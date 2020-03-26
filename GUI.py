@@ -10,6 +10,7 @@ from searchSuppWindow import *
 from empWindow import *
 from searchMealWindow import *
 from searchProdWindow import *
+from mealWindow import *
 # from PyQt5.QtWidgets import QTableWidgetItem
 
 class MainWin(QtWidgets.QMainWindow):
@@ -32,17 +33,30 @@ class MainWin(QtWidgets.QMainWindow):
     def clicked_meal(self):
         self.ui = Ui_SearchMeal()
         self.ui.setupUi(self)
-    
+        self.ui.butAdd.clicked.connect(self.clicked_add_meal)
+        self.ui.tableWidget.itemDoubleClicked.connect(self.clicked_det_meal)
+
+    def clicked_add_meal(self):
+        self.ui = UiMealWindow()
+        self.ui.setupUi(self)
+
+    def clicked_det_meal(self):
+        row=self.ui.tableWidget.selectionModel().selection().indexes()[0].row()
+        item_id=self.ui.tableWidget.item(row, 0).text()
+        self.ui = UiMealWindow()
+        print(item_id)
+        self.ui.setupUi(self, id_meal=item_id)
+
     def clicked_supplier(self):
         self.ui = Ui_SuppWindow()
         self.ui.setupUi(self)
-        
+    
     def clicked_btn_employee(self):
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
         self.ui.butAdd.clicked.connect(self.btnAddClicked)
-
+        x
     def clicked_item(self):
         print("grt")
         row=self.ui.tableView.selectionModel().selection().indexes()[0].row()

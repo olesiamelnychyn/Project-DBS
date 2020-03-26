@@ -8,10 +8,14 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from main import *
+import datetime
 
 class UiMealWindow(object):
-    def setupUi(self, EmployeeWindow):
+    def setupUi(self, EmployeeWindow, id_meal=2):
+        self.id=id_meal
+        print(self.id)
+        
         EmployeeWindow.setObjectName("EmployeeWindow")
         EmployeeWindow.resize(615, 447)
         self.centralwidget = QtWidgets.QWidget(EmployeeWindow)
@@ -65,6 +69,7 @@ class UiMealWindow(object):
 
         self.retranslateUi(EmployeeWindow)
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
+        self.fill()
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -78,6 +83,17 @@ class UiMealWindow(object):
         self.label_9.setText(_translate("EmployeeWindow", "Reservations"))
         self.label_10.setText(_translate("EmployeeWindow", "Products"))
         self.label_11.setText(_translate("EmployeeWindow", "Time"))
+
+    def fill(self):
+        res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
+        self.textFN.insertPlainText(res[1])
+        self.sboxPrice.setValue(res[2])
+        self.sboxTime.setValue((res[3]).total_seconds())
+        res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
+        print(res)
+        for result in res:
+            self.listWidgetProd.addItem(result[0]+", price: "+str(result[1])+", supplier: "+result[2])
+
 
 
 if __name__ == "__main__":
