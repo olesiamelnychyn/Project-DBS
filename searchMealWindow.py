@@ -88,9 +88,15 @@ class Ui_SearchMeal(object):
         self.chboxDesc = QtWidgets.QCheckBox(self.centralwidget)
         self.chboxDesc.setGeometry(QtCore.QRect(570, 360, 70, 17))
         self.chboxDesc.setObjectName("chboxDesc")
+        
         self.cboxGroup = QtWidgets.QComboBox(self.centralwidget)
         self.cboxGroup.setGeometry(QtCore.QRect(460, 400, 161, 22))
         self.cboxGroup.setObjectName("cboxGroup")
+        self.cboxGroup.addItem("Choose group by")
+        self.cboxGroup.addItem("Restaurant")
+        self.cboxGroup.addItem("Reservation")
+
+
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(460, 270, 41, 27))
         self.label_5.setObjectName("label_5")
@@ -112,6 +118,7 @@ class Ui_SearchMeal(object):
         QtCore.QMetaObject.connectSlotsByName(SearchWindow)
 
         self.fill()
+        self.butSearch.clicked.connect(self.search_meals)
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -129,14 +136,14 @@ class Ui_SearchMeal(object):
         self.label_7.setText(_translate("SearchWindow", "to"))
 
     def fill(self):
-        result=search_meals(" ")
+        result=search_meals(False)
         for res in result:
-            rowPosition = self.tableView.rowCount()
-            self.tableView.insertRow(rowPosition)
-            self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
-            self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
-            self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
-            self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
+            rowPosition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowPosition)
+            self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
+            self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
         
     def search_meals(self):
         args={'title':'',
@@ -148,16 +155,42 @@ class Ui_SearchMeal(object):
         'order_by':'',
         'group_by':''}
         args['title']=self.textSearch.toPlainText()
-        args['price_from']=self.textFromPrice.toPlainText()
-        args['price_to']=self.textToPrice.toPlainText()
-        args['prep_from']=self.textFromTime.toPlainText()
-        args['prep_to']=self.textToTime.toPlainText()
+
+        if(self.textFromPrice.toPlainText()==""):
+            args['price_from']=0
+        else:
+            args['price_from']=self.textFromPrice.toPlainText()
+
+        if(self.textToPrice.toPlainText()==""):
+            res=mycursor.execute("select max(price) from meal")[0]
+            args['price_to']=res[0]
+        else:
+            args['price_to']=self.textToPrice.toPlainText()
+
+        if(self.textFromTime.toPlainText()==""):
+            args['prep_from']=0
+        else: 
+            args['prep_from']=self.textFromTime.toPlainText()
+        if(self.textToTime.toPlainText()==""):
+            res=mycursor.execute("select max(prep_time) from meal")[0]
+            args['prep_to']=res[0]
+        else:
+            args['prep_to']=self.textToTime.toPlainText()
+
         args['product_in']=self.textProd.toPlainText()
-        if(self.comboBox.toPlainText()!="Choose order"):
-            args['order_by']=self.comboBox.toPlainText()
-        if(self.cboxGroup.toPlainText()!="Choose group by"):
-            args['order_by']=self.cboxGroup.toPlainText()
+        
+        if(self.comboBox.currentText()!="Choose order"):
+            if(self.comboBox.currentText()=="Preparation time"):
+                args['order_by']="prep_time"
+            else:
+                args['order_by']=self.comboBox.currentText().lower()
+            if(self.chboxDesc.isChecked()):
+                args['order_by']+=" desc"
+        if(self.cboxGroup.currentText()!="Choose group by"):
+            args['group_by']=self.cboxGroup.currentText().lower()
         print(args)
+        result=search_meals(args)
+        print(result)
 
         
 if __name__ == "__main__":

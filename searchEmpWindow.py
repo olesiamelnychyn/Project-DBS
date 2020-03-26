@@ -312,7 +312,7 @@ class Ui_SearchWindow(object):
             rowPosition = self.tableView.rowCount()
             self.tableView.insertRow(rowPosition)
             if(args['group_by']=="restaurant"):
-                mycursor.execute("select r.capacity, zc.city, zc.state from zip zc join restaurant r on r.zip=zc.id where r.id="+str(res[0])+";")
+                mycursor.execute("select r.capacity, zc.state from zip zc join restaurant r on r.zip=zc.code where r.id="+str(res[0])+";")
                 result2=getresult(mycursor)[0]
                 print(result2)
                 it="Capacity: "+str(result2[0])+", "+result2[1]+", "+result2[2]
@@ -367,10 +367,10 @@ class Ui_SearchWindow(object):
     def btnRest(self):
         self.listViewRest.clear()
         if(self.textRest.toPlainText()!=""):
-            mycursor.execute("select r.capacity, zc.city, zc.state from zip zc join restaurant r on r.zip=zc.id where r.id="+self.textRest.toPlainText())
+            mycursor.execute("select r.capacity, zc.state from zip zc join restaurant r on r.zip=zc.code where r.id="+self.textRest.toPlainText())
             result=getresult(mycursor)[0]
             print(result)
-            self.listViewRest.addItem("Capacity: "+str(result[0])+", "+result[1]+", "+result[2])
+            self.listViewRest.addItem("Capacity: "+str(result[0])+", State:"+result[1])
             mycursor.execute("select reserv.id, reserv.date_start, reserv.date_end, reserv.visitors from reservation reserv join restaurant r on reserv.rest_id=r.id where r.id="+self.textRest.toPlainText())
             result=getresult(mycursor)
             self.listViewReserv.clear()

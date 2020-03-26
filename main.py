@@ -95,6 +95,13 @@ def delete_employee(table, id_value):
   
 def search_meals(args):
   search="Select * from meal"
+  if(args):
+    search+=" where price between "+args['price_from']+" "+args['price_to']+" and prep_time between "+args['prep_from']+" "+args['prep_to']
+    if(args['title']!=''):
+      search+=" and title like \'"+args['title']+"%\'"
+    if(args['order_by']!=''):
+      search+=" order by "+args['order_by']
+    
   print(search)
   mycursor.execute(search)
   result=getresult(mycursor)
@@ -243,4 +250,39 @@ def search_meals(args):
 # printresult(mycursor)
 # mydb.commit()
 
+# sqlinsert="INSERT INTO product (title, price, supp_id) VALUES(%s, %s, %s)"
+# values=[
+#   ("Milk", "2.0", 8),
+#   ("Flour", "1.5",1),
+#   ("Salat", "2.5", 2),
+#   ("Chicken", "3.3", 5),
+#   ("Pork", "5.0", 5),
+#   ("Cheese", "3.5", 8),
+#   ("Losos", "5.8", 7),
+#   ("Coffee", "3.4", 1),
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from product')
+# printresult(mycursor)
+# mydb.commit()
+
+sqlinsert="INSERT INTO meal_product (prod_id, meal_id) VALUES(%s, %s)"
+values=[
+  (1,1),
+  (1,4),
+  (1,8),
+  (2,4),
+  (2,6),
+  (3,2),
+  (3,1),
+  (4,2),
+  (5,5),
+  (6,6),
+  (7,7),
+  (8,8)
+]
+mycursor.executemany(sqlinsert,values)
+mycursor.execute('Select * from meal_product')
+printresult(mycursor)
+mydb.commit()
 
