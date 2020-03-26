@@ -8,7 +8,7 @@ from startWindow import *
 from searchEmpWindow import *
 from searchSuppWindow import *
 from empWindow import *
-from PyQt5.QtWidgets import QTableWidgetItem
+# from PyQt5.QtWidgets import QTableWidgetItem
 
 class MainWin(QtWidgets.QMainWindow):
     

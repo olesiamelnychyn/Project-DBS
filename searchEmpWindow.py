@@ -7,12 +7,11 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+# from PyQt5 import QtCore, QtGui, QtWidgets
 # from QtGui import *
 # from QtCore import *
 from main import *
 from GUI import *
-
 
 class Ui_SearchWindow(object):
     def setupUi(self, SearchWindow):
@@ -337,8 +336,8 @@ class Ui_SearchWindow(object):
                 self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
             if("rest_id"==args['order_by'] or "rest_id desc"==args['order_by']):
                 self.tableView.setItem(rowPosition ,4, QtWidgets.QTableWidgetItem(str(res[4])))
-        color = QColor(220, 220, 220)
-        color2 = QColor(254, 253, 253)
+        # color = QColor(220, 220, 220)
+        # color2 = QColor(254, 253, 253)
         # for j in range(self.tableView.columnCount()):
         #     for row in range(self.tableView.rowCount()):
         #         if(row % 2 == 0 ):

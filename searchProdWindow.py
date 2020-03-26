@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_SearchWindow(object):
+class Ui_SearchProd(object):
     def setupUi(self, SearchWindow):
         SearchWindow.setObjectName("SearchWindow")
         SearchWindow.resize(640, 491)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     SearchWindow = QtWidgets.QMainWindow()
-    ui = Ui_SearchWindow()
+    ui = Ui_SearchProd()
     ui.setupUi(SearchWindow)
     SearchWindow.show()
     sys.exit(app.exec_())

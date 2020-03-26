@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_EmployeeWindow(object):
+class UiMealWindow(object):
     def setupUi(self, EmployeeWindow):
         EmployeeWindow.setObjectName("EmployeeWindow")
         EmployeeWindow.resize(615, 447)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     EmployeeWindow = QtWidgets.QMainWindow()
-    ui = Ui_EmployeeWindow()
+    ui = UiMealWindow()
     ui.setupUi(EmployeeWindow)
     EmployeeWindow.show()
     sys.exit(app.exec_())
