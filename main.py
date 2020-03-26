@@ -303,3 +303,73 @@ def search_meals(args):
 # printresult(mycursor)
 # mydb.commit()
 
+# sqlinsert="INSERT INTO meal_rest (rest_id, meal_id) VALUES(%s, %s)"
+# values=[
+#   (1,3),
+#   (1,4),
+#   (1,8),
+#   (2,4),
+#   (2,6),
+#   (3,2),
+#   (3,1),
+#   (4,2),
+#   (4,7),
+#   (4,3),
+#   (4,1),
+#   (5,5),
+#   (5,6),
+#   (5,1),
+#   (5,3),
+#   (6,6),
+#   (6,6),
+#   (6,6),
+#   (6,3),
+#   (7,7),
+#   (7,4),
+#   (7,5),
+#   (7,6),
+#   (8,8),
+#   (8,7),
+#   (8,4),
+#   (8,3)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from meal_rest')
+# printresult(mycursor)
+# mydb.commit()
+
+# sqlinsert="INSERT INTO meal_reserv (reserv_id, meal_id) VALUES(%s, %s)"
+# values=[
+#   (1,3),
+#   (1,4),
+#   (1,8),
+#   (2,4),
+#   (2,6),
+#   (3,2),
+#   (3,1),
+#   (4,2),
+#   (4,7),
+#   (4,3),
+#   (4,1),
+#   (5,5),
+#   (5,6),
+#   (5,1),
+#   (5,3),
+#   (6,6),
+#   (6,6),
+#   (6,6),
+#   (6,2),
+#   (7,7),
+#   (7,4),
+#   (7,5),
+#   (7,6),
+#   (8,8),
+#   (8,7),
+#   (8,4),
+#   (8,3)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from meal_reserv')
+# printresult(mycursor)
+# mydb.commit()
+

@@ -70,6 +70,7 @@ class UiMealWindow(object):
         self.retranslateUi(EmployeeWindow)
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.fill()
+        self.butUndo.clicked.connect(self.fill)
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -85,15 +86,27 @@ class UiMealWindow(object):
         self.label_11.setText(_translate("EmployeeWindow", "Time"))
 
     def fill(self):
+
         res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
+        self.textFN.clear()
         self.textFN.insertPlainText(res[1])
         self.sboxPrice.setValue(res[2])
         self.sboxTime.setValue((res[3]).total_seconds())
         res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
         print(res)
+        self.listWidgetProd.clear()
         for result in res:
             self.listWidgetProd.addItem(result[0]+", price: "+str(result[1])+", supplier: "+result[2])
-
+        res=getresult(mycursor.execute("select r.capacity, zc.state from restaurant r join meal_rest m on m.rest_id=r.id join zip zc on r.zip=zc.code where m.meal_id="+str(self.id)))
+        self.listWidgetRest.clear()
+        for result in res:
+            self.listWidgetRest.addItem("Capacity: "+str(result[0])+", "+result[1])
+        # print(res)
+        res=getresult(mycursor.execute("select DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\"), r.visitors from reservation r join meal_reserv m on m.reserv_id=r.id where m.meal_id="+str(self.id)))
+        print(res)
+        self.listWidgetReserv.clear()
+        for result in res:
+            self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
 
 
 if __name__ == "__main__":
