@@ -71,6 +71,7 @@ class UiMealWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.fill()
         self.butUndo.clicked.connect(self.fill)
+        self.butSave.clicked.connect(self.changes)
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -108,6 +109,16 @@ class UiMealWindow(object):
         for result in res:
             self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
 
+    def changes(self):
+        if(self.textFN.toPlainText()==""):
+            self.textFN.insertPlainText("Enter title!")
+            return
+        if(self.id!=0):
+            mycursor.execute("update meal set title=\'"+self.textFN.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=\'"+self.sboxTime.text()+"\' where id="+str(self.id))
+        else:
+            mycursor.execute("insert into meal (title, price, prep_time) values(\'"+self.textFN.toPlainText()+"\', "+self.sboxPrice.text()+", \'00.00."+self.sboxTime.text()+"\' where id="+str(self.id)) 
+        print(getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0])
+        mydb.commit()
 
 if __name__ == "__main__":
     import sys

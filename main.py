@@ -114,6 +114,13 @@ def search_meals(args):
   print(result)
   return result
 
+def delete_meals(id):
+  mycursor.execute("Delete from meal_product where meal_id="+str(id))
+  mycursor.execute("Delete from meal_reserv where meal_id="+str(id))
+  mycursor.execute("Delete from meal_rest where meal_id="+str(id))
+  mycursor.execute("Delete from meal where id="+str(id))
+  mydb.commit()
+
 
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
 # mycursor.execute("drop table meal_product;")
