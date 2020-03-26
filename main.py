@@ -96,7 +96,7 @@ def delete_employee(table, id_value):
 def search_meals(args):
   search="Select * from meal"
   if(args):
-    search+=" where price between "+args['price_from']+" "+args['price_to']+" and prep_time between "+args['prep_from']+" "+args['prep_to']
+    search+=" where price between "+args['price_from']+" and "+args['price_to']+" and prep_time between time(\""+args['prep_from']+"\") and time(\""+args['prep_to']+"\")"
     if(args['title']!=''):
       search+=" and title like \'"+args['title']+"%\'"
     if(args['order_by']!=''):
@@ -110,6 +110,9 @@ def search_meals(args):
 
 
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
+# mycursor.execute("drop table meal_product;")
+# mycursor.execute("drop table product;" )
+# mycursor.execute("drop table meal;") 
 # mycursor.execute("drop table product; drop table supplier; drop table cheque; drop table meal;")
 # mycursor.execute("drop table reservation; drop table employee; drop table restaurant; drop table zip;")
 # mydb.commit()
@@ -233,56 +236,64 @@ def search_meals(args):
 # mycursor.execute('Select * from supplier')
 # printresult(mycursor)
 # mydb.commit()
-
-# sqlinsert="INSERT INTO meal (title, price, prep_time) VALUES(%s, %s, %s)"
+# mycursor.execute("Delete from meal_product")
+# mycursor.execute("Delete from meal")
+# mycursor.execute("Delete from product")
+# mydb.commit()
+# sqlinsert="INSERT INTO meal (id, title, price, prep_time) VALUES(%s, %s, %s, %s)"
 # values=[
-#   ("Greek salad", "4.5", "10"),
-#   ("Salad \"Caesar\"", "4.25", "13"),
-#   ("Milkshake", "2.5", "5"),
-#   ("Pancakes with marple syrup", "3.3", "15"),
-#   ("Pork stake", "6.0", "30"),
-#   ("Pizza \"Hawaii\"", "3.5", "20"),
-#   ("Backed losos", "5.8", "25"),
-#   ("Coffee", "2.1", "7"),
+#   (1,"Greek salad", 4.5, "10"),
+#   (2, "Salad \"Caesar\"", 4.25, "13"),
+#   (3,"Milkshake", 2.5, "5"),
+#   (4,"Pancakes with marple syrup", 3.3, "15"),
+#   (5,"Pork stake", 6.0, "30"),
+#   (6,"Pizza \"Hawaii\"", 3.5, "20"),
+#   (7,"Backed losos", 5.8, "25"),
+#   (8,"Coffee", 2.1, "7")
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from meal')
 # printresult(mycursor)
-# mydb.commit()
-
-# sqlinsert="INSERT INTO product (title, price, supp_id) VALUES(%s, %s, %s)"
-# values=[
-#   ("Milk", "2.0", 8),
-#   ("Flour", "1.5",1),
-#   ("Salat", "2.5", 2),
-#   ("Chicken", "3.3", 5),
-#   ("Pork", "5.0", 5),
-#   ("Cheese", "3.5", 8),
-#   ("Losos", "5.8", 7),
-#   ("Coffee", "3.4", 1),
-# ]
-# mycursor.executemany(sqlinsert,values)
-# mycursor.execute('Select * from product')
+# mycursor.execute('Select max(price) from meal')
 # printresult(mycursor)
 # mydb.commit()
 
-sqlinsert="INSERT INTO meal_product (prod_id, meal_id) VALUES(%s, %s)"
-values=[
-  (1,1),
-  (1,4),
-  (1,8),
-  (2,4),
-  (2,6),
-  (3,2),
-  (3,1),
-  (4,2),
-  (5,5),
-  (6,6),
-  (7,7),
-  (8,8)
-]
-mycursor.executemany(sqlinsert,values)
-mycursor.execute('Select * from meal_product')
-printresult(mycursor)
-mydb.commit()
+# sqlinsert="INSERT INTO product (id, title, price, supp_id) VALUES(%s, %s, %s, %s)"
+# values=[
+#   (1,"Milk", 2.0, 8),
+#   (2, "Flour", 1.5 ,1),
+#   (3, "Salat", 2.5, 2),
+#   (4, "Chicken", 3.3, 5),
+#   (5, "Pork", 5.0, 5),
+#   (6, "Cheese", 3.5, 8),
+#   (7, "Losos", 5.8, 7),
+#   (8, "Coffee", 3.4, 1),
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from product')
+
+# printresult(mycursor)
+# # mycursor.execute('Select max(price) from product')
+# # res=getresult(mycursor)
+# mydb.commit()
+
+# sqlinsert="INSERT INTO meal_product (prod_id, meal_id) VALUES(%s, %s)"
+# values=[
+#   (1,1),
+#   (1,4),
+#   (1,8),
+#   (2,4),
+#   (2,6),
+#   (3,2),
+#   (3,1),
+#   (4,2),
+#   (5,5),
+#   (6,6),
+#   (7,7),
+#   (8,8)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from meal_product')
+# printresult(mycursor)
+# mydb.commit()
 

@@ -157,28 +157,29 @@ class Ui_SearchMeal(object):
         args['title']=self.textSearch.toPlainText()
 
         if(self.textFromPrice.toPlainText()==""):
-            args['price_from']=0
+            args['price_from']=str(0.0)
         else:
             args['price_from']=self.textFromPrice.toPlainText()
 
         if(self.textToPrice.toPlainText()==""):
-            res=mycursor.execute("select max(price) from meal")[0]
-            args['price_to']=res[0]
+            res=getresult(mycursor.execute("select max(price) from meal"))[0]
+            print(res)
+            args['price_to']=str(res[0])
         else:
             args['price_to']=self.textToPrice.toPlainText()
 
         if(self.textFromTime.toPlainText()==""):
-            args['prep_from']=0
+            args['prep_from']="00:00:00"
         else: 
             args['prep_from']=self.textFromTime.toPlainText()
         if(self.textToTime.toPlainText()==""):
-            res=mycursor.execute("select max(prep_time) from meal")[0]
-            args['prep_to']=res[0]
+            res=getresult(mycursor.execute("select max(prep_time) from meal")) [0]
+            args['prep_to']="0"+str(res[0])
         else:
             args['prep_to']=self.textToTime.toPlainText()
 
         args['product_in']=self.textProd.toPlainText()
-        
+
         if(self.comboBox.currentText()!="Choose order"):
             if(self.comboBox.currentText()=="Preparation time"):
                 args['order_by']="prep_time"
@@ -190,7 +191,16 @@ class Ui_SearchMeal(object):
             args['group_by']=self.cboxGroup.currentText().lower()
         print(args)
         result=search_meals(args)
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
         print(result)
+        for res in result:
+            rowPosition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowPosition)
+            self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
+            self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
         
 if __name__ == "__main__":
