@@ -40,7 +40,7 @@ class Ui_SearchMeal(object):
         self.butProdS.setStyleSheet("background-image: url(./img/selbtn.jpg);")
         self.butProdS.setText("")
         self.butProdS.setObjectName("butProdS")
-        self.listViewProd = QtWidgets.QListView(self.centralwidget)
+        self.listViewProd = QtWidgets.QListWidget(self.centralwidget)
         self.listViewProd.setGeometry(QtCore.QRect(460, 70, 161, 71))
         self.listViewProd.setObjectName("listViewProd")
         self.butDelete = QtWidgets.QPushButton(self.centralwidget)
@@ -119,6 +119,7 @@ class Ui_SearchMeal(object):
 
         self.fill()
         self.butSearch.clicked.connect(self.search_meals)
+        self.butProdS.clicked.connect(self.search_pro_id)
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -134,6 +135,12 @@ class Ui_SearchMeal(object):
         self.label_5.setText(_translate("SearchWindow", "from"))
         self.label_6.setText(_translate("SearchWindow", "Choose preparation time"))
         self.label_7.setText(_translate("SearchWindow", "to"))
+
+    def search_pro_id(self):
+        self.listViewProd.clear()
+        id_prod=self.textProd.toPlainText()
+        res=getresult(mycursor.execute("Select p.title, p.price, s.title from product p join supplier s on s.id=p.supp_id where p.id="+id_prod))[0]
+        self.listViewProd.addItem(res[0]+", price: "+str(res[1])+", supp: "+str(res[2]))
 
     def fill(self):
         result=search_meals(False)
@@ -193,7 +200,7 @@ class Ui_SearchMeal(object):
         result=search_meals(args)
         while (self.tableWidget.rowCount() > 0):
             self.tableWidget.removeRow(0)
-        print(result)
+        # print(result)
         for res in result:
             rowPosition = self.tableWidget.rowCount()
             self.tableWidget.insertRow(rowPosition)

@@ -94,13 +94,19 @@ def delete_employee(table, id_value):
   print(sqlDelete)
   
 def search_meals(args):
-  search="Select * from meal"
+  search="Select m.id, m.title, m.price, m.prep_time from meal m "
   if(args):
-    search+=" where price between "+args['price_from']+" and "+args['price_to']+" and prep_time between time(\""+args['prep_from']+"\") and time(\""+args['prep_to']+"\")"
+    if(args["product_in"]!=""):
+      search+=" join meal_product p on p.meal_id=m.id where p.prod_id="+args["product_in"]+" and "
+    else:
+      search+="where "
+    search+="m.price between "+args['price_from']+" and "+args['price_to']+" and m.prep_time between time(\""+args['prep_from']+"\") and time(\""+args['prep_to']+"\")"
     if(args['title']!=''):
-      search+=" and title like \'"+args['title']+"%\'"
+      search+=" and m.title like \'"+args['title']+"%\'"
     if(args['order_by']!=''):
       search+=" order by "+args['order_by']
+    else:
+      search+=" order by m.id"
     
   print(search)
   mycursor.execute(search)
@@ -279,7 +285,7 @@ def search_meals(args):
 
 # sqlinsert="INSERT INTO meal_product (prod_id, meal_id) VALUES(%s, %s)"
 # values=[
-#   (1,1),
+#   (1,3),
 #   (1,4),
 #   (1,8),
 #   (2,4),
