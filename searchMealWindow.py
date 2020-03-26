@@ -120,6 +120,7 @@ class Ui_SearchMeal(object):
         self.fill()
         self.butSearch.clicked.connect(self.search_meals)
         self.butProdS.clicked.connect(self.search_pro_id)
+        self.butDelete.clicked.connect(self.del_meal)
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -139,8 +140,9 @@ class Ui_SearchMeal(object):
     def search_pro_id(self):
         self.listViewProd.clear()
         id_prod=self.textProd.toPlainText()
-        res=getresult(mycursor.execute("Select p.title, p.price, s.title from product p join supplier s on s.id=p.supp_id where p.id="+id_prod))[0]
-        self.listViewProd.addItem(res[0]+", price: "+str(res[1])+", supp: "+str(res[2]))
+        if(id_prod!=""):
+            res=getresult(mycursor.execute("Select p.title, p.price, s.title from product p join supplier s on s.id=p.supp_id where p.id="+id_prod))[0]
+            self.listViewProd.addItem(res[0]+", price: "+str(res[1])+", supp: "+str(res[2]))
 
     def fill(self):
         result=search_meals(False)
@@ -161,6 +163,11 @@ class Ui_SearchMeal(object):
         'product_in':'',
         'order_by':'',
         'group_by':''}
+        self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Title"))
+        self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Preraration time"))
+        self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Price"))
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
         args['title']=self.textSearch.toPlainText()
 
         if(self.textFromPrice.toPlainText()==""):
@@ -196,20 +203,35 @@ class Ui_SearchMeal(object):
                 args['order_by']+=" desc"
         if(self.cboxGroup.currentText()!="Choose group by"):
             args['group_by']=self.cboxGroup.currentText().lower()
+            self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem(self.cboxGroup.currentText()))
+            self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Sum for all"))
+            self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Average"))
         print(args)
         result=search_meals(args)
-        while (self.tableWidget.rowCount() > 0):
-            self.tableWidget.removeRow(0)
-        # print(result)
+        print(result)
+           
         for res in result:
             rowPosition = self.tableWidget.rowCount()
             self.tableWidget.insertRow(rowPosition)
             self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
-            self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            if(self.cboxGroup.currentText()=="Reservation"):
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem("vis: "+str(res[1])+", "+str(res[4])+", "+str(res[5])))
+            elif(self.cboxGroup.currentText()=="Restaurant"):
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem("cap: "+str(res[1])+", "+str(res[4])))
+            else:
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
             self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
             self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
-        
+    def del_meal(self):
+        if(len(self.tableWidget.selectionModel().selection().indexes())!=0):
+            row=self.tableWidget.selectionModel().selection().indexes()[0].row()
+            item_id=self.tableWidget.item(row, 0).text()
+            delete_meals(item_id)
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
+        self.fill()
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

@@ -94,19 +94,26 @@ def delete_employee(table, id_value):
   print(sqlDelete)
   
 def search_meals(args):
-  search="Select m.id, m.title, m.price, m.prep_time from meal m "
+  search="Select * from meal"
   if(args):
-    if(args["product_in"]!=""):
-      search+=" join meal_product p on p.meal_id=m.id where p.prod_id="+args["product_in"]+" and "
+    if(args['group_by']!=''):
+      if(args['group_by']=='reservation'):
+        search="Select r.id, r.visitors, round(avg(m.price),2), round(sum(m.price)*r.visitors,2), DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\") from meal m join meal_reserv mr on mr.meal_id=m.id join reservation r on mr.reserv_id=r.id group by mr.reserv_id  order by mr.id"
+      else:
+        search="Select r.id, r.capacity, round(avg(m.price),2), round(sum(m.price)*r.capacity,2), zc.state from meal m join meal_rest mr on mr.meal_id=m.id join restaurant r on mr.rest_id=r.id join zip zc on r.zip=zc.code group by mr.rest_id order by mr.id"
     else:
-      search+="where "
-    search+="m.price between "+args['price_from']+" and "+args['price_to']+" and m.prep_time between time(\""+args['prep_from']+"\") and time(\""+args['prep_to']+"\")"
-    if(args['title']!=''):
-      search+=" and m.title like \'"+args['title']+"%\'"
-    if(args['order_by']!=''):
-      search+=" order by "+args['order_by']
-    else:
-      search+=" order by m.id"
+      search="Select m.id, m.title, m.price, m.prep_time from meal m "
+      if(args["product_in"]!=""):
+        search+=" join meal_product p on p.meal_id=m.id where p.prod_id="+args["product_in"]+" and "
+      else:
+        search+="where "
+      search+="m.price between "+args['price_from']+" and "+args['price_to']+" and m.prep_time between time(\""+args['prep_from']+"\") and time(\""+args['prep_to']+"\")"
+      if(args['title']!=''):
+        search+=" and m.title like \'"+args['title']+"%\'"
+      if(args['order_by']!=''):
+        search+=" order by "+args['order_by']
+      else:
+        search+=" order by m.id"
     
   print(search)
   mycursor.execute(search)
@@ -114,23 +121,36 @@ def search_meals(args):
   print(result)
   return result
 
+def delete_meals(id):
+  mycursor.execute("Delete from cheque where meal_id="+str(id))
+  mycursor.execute("Delete from meal_product where meal_id="+str(id))
+  mycursor.execute("Delete from meal_reserv where meal_id="+str(id))
+  mycursor.execute("Delete from meal_rest where meal_id="+str(id))
+  mycursor.execute("Delete from meal where id="+str(id))
+  mydb.commit()
+
 
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
 # mycursor.execute("drop table meal_product;")
+# mycursor.execute("drop table meal_reserv")
+# mycursor.execute("drop table meal_rest")
+# mydb.commit()
 # mycursor.execute("drop table product;" )
+# mycursor.execute("drop table cheque;" )
 # mycursor.execute("drop table meal;") 
 # mycursor.execute("drop table product; drop table supplier; drop table cheque; drop table meal;")
 # mycursor.execute("drop table reservation; drop table employee; drop table restaurant; drop table zip;")
 # mydb.commit()
-
+# mycursor.execute("Show tables")
+# print(getresult(mycursor))
 
 # mycursor.execute("CREATE TABLE zip (code varchar(10) NOT NULL PRIMARY KEY, state char(2) NOT NULL);")
 # mycursor.execute("CREATE TABLE restaurant (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, zip varchar(10), capacity INT NOT NULL, FOREIGN KEY(zip) REFERENCES zip(code));")
-# mycursor.execute("CREATE TABLE meal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(2,2), prep_time TIME);")
+# mycursor.execute("CREATE TABLE meal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(6,2), prep_time TIME);")
 # mycursor.execute("CREATE TABLE meal_rest (id int not null auto_increment primary key, rest_id INT, meal_id INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE cheque (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, meal_id INT, amount INT, date DATETIME, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE supplier (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(30), phone CHAR(13), e_mail varchar(320));")
-# mycursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(2,2), supp_id INT, FOREIGN KEY(supp_id) REFERENCES supplier(id));")
+# mycursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(6,2), supp_id INT, FOREIGN KEY(supp_id) REFERENCES supplier(id));")
 # mycursor.execute("CREATE TABLE meal_product (id int not null auto_increment primary key, meal_id INT, prod_id INT, FOREIGN KEY(prod_id) REFERENCES product(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE reservation (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, date_start DATETIME, date_end DATETIME, visitors INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
 # mycursor.execute("CREATE TABLE meal_reserv (id int not null auto_increment primary key, reserv_id INT, meal_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
@@ -246,6 +266,7 @@ def search_meals(args):
 # mycursor.execute("Delete from meal")
 # mycursor.execute("Delete from product")
 # mydb.commit()
+
 # sqlinsert="INSERT INTO meal (id, title, price, prep_time) VALUES(%s, %s, %s, %s)"
 # values=[
 #   (1,"Greek salad", 4.5, "10"),
@@ -300,6 +321,76 @@ def search_meals(args):
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from meal_product')
+# printresult(mycursor)
+# mydb.commit()
+
+# sqlinsert="INSERT INTO meal_rest (rest_id, meal_id) VALUES(%s, %s)"
+# values=[
+#   (1,3),
+#   (1,4),
+#   (1,8),
+#   (2,4),
+#   (2,6),
+#   (3,2),
+#   (3,1),
+#   (4,2),
+#   (4,7),
+#   (4,3),
+#   (4,1),
+#   (5,5),
+#   (5,6),
+#   (5,1),
+#   (5,3),
+#   (6,6),
+#   (6,6),
+#   (6,6),
+#   (6,3),
+#   (7,7),
+#   (7,4),
+#   (7,5),
+#   (7,6),
+#   (8,8),
+#   (8,7),
+#   (8,4),
+#   (8,3)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from meal_rest')
+# printresult(mycursor)
+# mydb.commit()
+
+# sqlinsert="INSERT INTO meal_reserv (reserv_id, meal_id) VALUES(%s, %s)"
+# values=[
+#   (1,3),
+#   (1,4),
+#   (1,8),
+#   (2,4),
+#   (2,6),
+#   (3,2),
+#   (3,1),
+#   (4,2),
+#   (4,7),
+#   (4,3),
+#   (4,1),
+#   (5,5),
+#   (5,6),
+#   (5,1),
+#   (5,3),
+#   (6,6),
+#   (6,6),
+#   (6,6),
+#   (6,2),
+#   (7,7),
+#   (7,4),
+#   (7,5),
+#   (7,6),
+#   (8,8),
+#   (8,7),
+#   (8,4),
+#   (8,3)
+# ]
+# mycursor.executemany(sqlinsert,values)
+# mycursor.execute('Select * from meal_reserv')
 # printresult(mycursor)
 # mydb.commit()
 

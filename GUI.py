@@ -39,6 +39,7 @@ class MainWin(QtWidgets.QMainWindow):
     def clicked_add_meal(self):
         self.ui = UiMealWindow()
         self.ui.setupUi(self)
+        self.ui.butDel.clicked.connect(self.del_meal)
 
     def clicked_det_meal(self):
         row=self.ui.tableWidget.selectionModel().selection().indexes()[0].row()
@@ -46,6 +47,12 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui = UiMealWindow()
         print(item_id)
         self.ui.setupUi(self, id_meal=item_id)
+        self.ui.butDel.clicked.connect(self.del_meal)
+    
+    def del_meal(self):
+        if(self.ui.id != 0):
+            delete_meals(self.ui.id)
+        self.clicked_meal()
 
     def clicked_supplier(self):
         self.ui = Ui_SuppWindow()
@@ -56,7 +63,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
         self.ui.butAdd.clicked.connect(self.btnAddClicked)
-        x
+        
     def clicked_item(self):
         print("grt")
         row=self.ui.tableView.selectionModel().selection().indexes()[0].row()
