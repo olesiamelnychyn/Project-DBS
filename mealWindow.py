@@ -12,7 +12,7 @@ from main import *
 import datetime
 
 class UiMealWindow(object):
-    def setupUi(self, EmployeeWindow, id_meal=2):
+    def setupUi(self, EmployeeWindow, id_meal=0):
         self.id=id_meal
         print(self.id)
         
@@ -87,27 +87,27 @@ class UiMealWindow(object):
         self.label_11.setText(_translate("EmployeeWindow", "Time"))
 
     def fill(self):
-
-        res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
-        self.textFN.clear()
-        self.textFN.insertPlainText(res[1])
-        self.sboxPrice.setValue(res[2])
-        self.sboxTime.setValue((res[3]).total_seconds())
-        res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
-        print(res)
-        self.listWidgetProd.clear()
-        for result in res:
-            self.listWidgetProd.addItem(result[0]+", price: "+str(result[1])+", supplier: "+result[2])
-        res=getresult(mycursor.execute("select r.capacity, zc.state from restaurant r join meal_rest m on m.rest_id=r.id join zip zc on r.zip=zc.code where m.meal_id="+str(self.id)))
-        self.listWidgetRest.clear()
-        for result in res:
-            self.listWidgetRest.addItem("Capacity: "+str(result[0])+", "+result[1])
-        # print(res)
-        res=getresult(mycursor.execute("select DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\"), r.visitors from reservation r join meal_reserv m on m.reserv_id=r.id where m.meal_id="+str(self.id)))
-        print(res)
-        self.listWidgetReserv.clear()
-        for result in res:
-            self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
+        if(self.id!=0):
+            res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
+            self.textFN.clear()
+            self.textFN.insertPlainText(res[1])
+            self.sboxPrice.setValue(res[2])
+            self.sboxTime.setValue((res[3]).total_seconds())
+            res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
+            print(res)
+            self.listWidgetProd.clear()
+            for result in res:
+                self.listWidgetProd.addItem(result[0]+", price: "+str(result[1])+", supplier: "+result[2])
+            res=getresult(mycursor.execute("select r.capacity, zc.state from restaurant r join meal_rest m on m.rest_id=r.id join zip zc on r.zip=zc.code where m.meal_id="+str(self.id)))
+            self.listWidgetRest.clear()
+            for result in res:
+                self.listWidgetRest.addItem("Capacity: "+str(result[0])+", "+result[1])
+            # print(res)
+            res=getresult(mycursor.execute("select DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\"), r.visitors from reservation r join meal_reserv m on m.reserv_id=r.id where m.meal_id="+str(self.id)))
+            print(res)
+            self.listWidgetReserv.clear()
+            for result in res:
+                self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
 
     def changes(self):
         if(self.textFN.toPlainText()==""):
@@ -116,7 +116,11 @@ class UiMealWindow(object):
         if(self.id!=0):
             mycursor.execute("update meal set title=\'"+self.textFN.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=\'"+self.sboxTime.text()+"\' where id="+str(self.id))
         else:
-            mycursor.execute("insert into meal (title, price, prep_time) values(\'"+self.textFN.toPlainText()+"\', "+self.sboxPrice.text()+", \'00.00."+self.sboxTime.text()+"\' where id="+str(self.id)) 
+            insert="insert into meal (title, price, prep_time) values(\'"+self.textFN.toPlainText()+"\', "+self.sboxPrice.text().replace(",", ".")+", time(\'00:00:"+self.sboxTime.text()+"\'))"
+            print(insert)
+            mycursor.execute(insert) 
+            self.id=getresult(mycursor.execute("Select max(id) from meal"))[0][0]
+            print(self.id)
         print(getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0])
         mydb.commit()
 
