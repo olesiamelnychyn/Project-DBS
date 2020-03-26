@@ -14,6 +14,7 @@ class Ui_SearchProd(object):
     def setupUi(self, SearchWindow):
         SearchWindow.setObjectName("SearchWindow")
         SearchWindow.resize(640, 491)
+        SearchWindow.setStyleSheet("background:#fafafe;")
         self.centralwidget = QtWidgets.QWidget(SearchWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textSearch = QtWidgets.QTextEdit(self.centralwidget)
@@ -34,7 +35,7 @@ class Ui_SearchProd(object):
         self.label_4.setObjectName("label_4")
         self.butSuppS = QtWidgets.QPushButton(self.centralwidget)
         self.butSuppS.setGeometry(QtCore.QRect(590, 30, 31, 31))
-        self.butSuppS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butSuppS.setStyleSheet("background-image: url(./img/selbtn.jpg);")
         self.butSuppS.setText("")
         self.butSuppS.setObjectName("butSuppS")
         self.listViewSupp = QtWidgets.QListView(self.centralwidget)

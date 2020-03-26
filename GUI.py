@@ -9,6 +9,7 @@ from searchEmpWindow import *
 from searchSuppWindow import *
 from empWindow import *
 from searchMealWindow import *
+from searchProdWindow import *
 # from PyQt5.QtWidgets import QTableWidgetItem
 
 class MainWin(QtWidgets.QMainWindow):
@@ -22,7 +23,11 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.butEmp.clicked.connect(self.clicked_btn_employee)
         self.ui.butSupp.clicked.connect(self.clicked_supplier)
         self.ui.butMeal.clicked.connect(self.clicked_meal)
+        self.ui.butProd.clicked.connect(self.clicked_product)
 
+    def clicked_product(self):
+        self.ui = Ui_SearchProd()
+        self.ui.setupUi(self)
 
     def clicked_meal(self):
         self.ui = Ui_SearchMeal()

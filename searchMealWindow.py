@@ -37,7 +37,7 @@ class Ui_SearchMeal(object):
         self.label_4.setObjectName("label_4")
         self.butProdS = QtWidgets.QPushButton(self.centralwidget)
         self.butProdS.setGeometry(QtCore.QRect(590, 30, 31, 31))
-        self.butProdS.setStyleSheet("background-image: url(selbtn.jpg);")
+        self.butProdS.setStyleSheet("background-image: url(./img/selbtn.jpg);")
         self.butProdS.setText("")
         self.butProdS.setObjectName("butProdS")
         self.listViewProd = QtWidgets.QListView(self.centralwidget)

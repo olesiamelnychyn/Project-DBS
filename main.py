@@ -108,13 +108,13 @@ def search_meals(args):
 # mydb.commit()
 
 
-# mycursor.execute("CREATE TABLE zip (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, city varchar(40) NOT NULL, state char(2) NOT NULL, street varchar(512), code varchar(10));")
-# mycursor.execute("CREATE TABLE restaurant (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, zip INT, capacity INT NOT NULL, FOREIGN KEY(zip) REFERENCES zip(id));")
-# mycursor.execute("CREATE TABLE meal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, price DECIMAL(2,2), prep_time TIME);")
+# mycursor.execute("CREATE TABLE zip (code varchar(10) NOT NULL PRIMARY KEY, state char(2) NOT NULL);")
+# mycursor.execute("CREATE TABLE restaurant (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, zip varchar(10), capacity INT NOT NULL, FOREIGN KEY(zip) REFERENCES zip(code));")
+# mycursor.execute("CREATE TABLE meal (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(2,2), prep_time TIME);")
 # mycursor.execute("CREATE TABLE meal_rest (id int not null auto_increment primary key, rest_id INT, meal_id INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE cheque (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, meal_id INT, amount INT, date DATETIME, FOREIGN KEY(rest_id) REFERENCES restaurant(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE supplier (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title VARCHAR(30), phone CHAR(13), e_mail varchar(320));")
-# mycursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, price DECIMAL(2,2), supp_id INT, FOREIGN KEY(supp_id) REFERENCES supplier(id));")
+# mycursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, title varchar(40), price DECIMAL(2,2), supp_id INT, FOREIGN KEY(supp_id) REFERENCES supplier(id));")
 # mycursor.execute("CREATE TABLE meal_product (id int not null auto_increment primary key, meal_id INT, prod_id INT, FOREIGN KEY(prod_id) REFERENCES product(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
 # mycursor.execute("CREATE TABLE reservation (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, rest_id INT, date_start DATETIME, date_end DATETIME, visitors INT, FOREIGN KEY(rest_id) REFERENCES restaurant(id));")
 # mycursor.execute("CREATE TABLE meal_reserv (id int not null auto_increment primary key, reserv_id INT, meal_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(meal_id) REFERENCES meal(id));")
@@ -122,14 +122,14 @@ def search_meals(args):
 # mycursor.execute("CREATE TABLE emp_reserv (id int not null auto_increment primary key, reserv_id INT, emp_id INT, FOREIGN KEY(reserv_id) REFERENCES reservation(id), FOREIGN KEY(emp_id) REFERENCES employee(id));")
 # mydb.commit()
 
-# sqlinsert="INSERT INTO zip (id, city, state, street, code) VALUES(%s, %s, %s, %s, %s)"
+# sqlinsert="INSERT INTO zip (code, state) VALUES(%s, %s)"
 # values=[
-#   (1,'Los Angeles', 'CA', 'W 8th St', '90014'),
-#   (2,'Miami', 'FL', 'NW 17th Ave', '33142'),
-#   (3,'New York', 'NY', 'Atlantic Ave', '11416'),
-#   (4,'Washington', 'DC', '14th St NW', '20010'),
-#   (5,'Boston', 'MA', 'Harrison Ave', '02118'),
-#   (6,'Chicago', 'IL', 'S Halsted St', '60608')
+#   ('90014', 'CA'),
+#   ('33142', 'FL'),
+#   ('11416', 'NY'),
+#   ('20010', 'DC'),
+#   ('02118', 'MA'),
+#   ('60608', 'IL')
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from zip')
@@ -138,15 +138,15 @@ def search_meals(args):
 
 # sqlinsert="INSERT INTO restaurant (id, zip, capacity) VALUES(%s, %s, %s)"
 # values=[
-#   (1, 2, 50),
-#   (2, 1, 76),
-#   (3, 3, 20),
-#   (4, 1, 90),
-#   (5, 1, 35),
-#   (6, 3, 40),
-#   (7, 3, 20),
-#   (8, 2, 70),
-#   (9, 1, 20)
+#   (1, '33142', 50),
+#   (2, '90014', 76),
+#   (3, '11416', 20),
+#   (4, '90014', 90),
+#   (5, '90014', 35),
+#   (6, '11416', 40),
+#   (7, '11416', 20),
+#   (8, '33142', 70),
+#   (9, '90014', 20)
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from restaurant')
@@ -230,11 +230,11 @@ def search_meals(args):
 # sqlinsert="INSERT INTO meal (title, price, prep_time) VALUES(%s, %s, %s)"
 # values=[
 #   ("Greek salad", "4.5", "10"),
-#   ("Salad \"Caesar\"", "4.25"", "13"),
+#   ("Salad \"Caesar\"", "4.25", "13"),
 #   ("Milkshake", "2.5", "5"),
 #   ("Pancakes with marple syrup", "3.3", "15"),
 #   ("Pork stake", "6.0", "30"),
-#   ("Pizza \"Hawaii\"", "3.5", 20"),
+#   ("Pizza \"Hawaii\"", "3.5", "20"),
 #   ("Backed losos", "5.8", "25"),
 #   ("Coffee", "2.1", "7"),
 # ]
