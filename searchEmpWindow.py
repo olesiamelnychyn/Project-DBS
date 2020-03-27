@@ -116,7 +116,7 @@ class Ui_SearchWindow(object):
         self.tableView.setColumnWidth(0, 30)
         self.tableView.setColumnWidth(1, 130)
         self.tableView.setColumnWidth(2, 130)
-        self.tableView.setColumnWidth(3, 130)
+        self.tableView.setColumnWidth(3, 120)
         # self.tableView.setColumnWidth(4, 30)
         self.tableView.verticalHeader().hide()
         # self.tableView.setDisabled(True)
@@ -171,6 +171,13 @@ class Ui_SearchWindow(object):
         self.butAdd.setGeometry(QtCore.QRect(10, 450, 171, 31))
         self.butAdd.setObjectName("butAdd")
         self.butAdd.setStyleSheet("background:#d4f9ca;")
+
+        # Button Home
+        self.butHome = QtWidgets.QPushButton(self.centralwidget)
+        self.butHome.setGeometry(QtCore.QRect(205, 450, 31, 31))
+        self.butHome.setStyleSheet("background-image: url(./img/home.png);")
+        self.butHome.setText("")
+        self.butHome.setObjectName("butHome")
 
         # Labels ----------------------------------------------------------
         self.label = QtWidgets.QLabel(self.centralwidget)

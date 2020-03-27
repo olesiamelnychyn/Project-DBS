@@ -84,6 +84,13 @@ class Ui_SearchProd(object):
         self.tableWidget.verticalHeader().hide()
         self.tableWidget.setStyleSheet("color: black")
 
+        # Button Home
+        self.butHome = QtWidgets.QPushButton(self.centralwidget)
+        self.butHome.setGeometry(QtCore.QRect(205, 450, 31, 31))
+        self.butHome.setStyleSheet("background-image: url(./img/home.png);")
+        self.butHome.setText("")
+        self.butHome.setObjectName("butHome")
+        
         # Order by
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(460, 260, 101, 22))

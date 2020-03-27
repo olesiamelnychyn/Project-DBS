@@ -19,7 +19,9 @@ class MainWin(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
-        
+        self.open_main()
+    
+    def open_main(self):    
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.butEmp.clicked.connect(self.clicked_btn_employee)
@@ -33,6 +35,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.butAdd.clicked.connect(self.clicked_add_product)
         self.ui.tableWidget.itemDoubleClicked.connect(self.clicked_open_product)
+        self.ui.butHome.clicked.connect(self.open_main)
 
     # one Product
     def clicked_add_product(self):
@@ -65,6 +68,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.butAdd.clicked.connect(self.clicked_add_meal)
         self.ui.tableWidget.itemDoubleClicked.connect(self.clicked_det_meal)
+        self.ui.butHome.clicked.connect(self.open_main)
 
     # one Meal
     def clicked_add_meal(self):
@@ -95,6 +99,7 @@ class MainWin(QtWidgets.QMainWindow):
     def clicked_supplier(self):
         self.ui = Ui_SuppWindow()
         self.ui.setupUi(self)
+        self.ui.butHome.clicked.connect(self.open_main)
     
     # Seach employee
     def clicked_btn_employee(self):
@@ -102,6 +107,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.tableView.itemDoubleClicked.connect(self.clicked_item)
         self.ui.butAdd.clicked.connect(self.btnAddClicked)
+        self.ui.butHome.clicked.connect(self.open_main)
         
     # one Employee
     def clicked_item(self):
