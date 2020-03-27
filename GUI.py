@@ -71,6 +71,7 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui = UiMealWindow()
         self.ui.setupUi(self)
         self.ui.butDel.clicked.connect(self.del_meal)
+        self.ui.butSave.clicked.connect(self.save_meal)
 
     def clicked_det_meal(self):
         row=self.ui.tableWidget.selectionModel().selection().indexes()[0].row()
@@ -79,6 +80,11 @@ class MainWin(QtWidgets.QMainWindow):
         print(item_id)
         self.ui.setupUi(self, id_meal=item_id)
         self.ui.butDel.clicked.connect(self.del_meal)
+        self.ui.butSave.clicked.connect(self.save_meal)
+
+    def save_meal(self):
+        self.ui.changes()
+        self.clicked_meal()
     
     def del_meal(self):
         if(self.ui.id != 0):

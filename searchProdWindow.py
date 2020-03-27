@@ -72,13 +72,15 @@ class Ui_SearchProd(object):
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 50, 421, 391))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setColumnCount(4)
         self.tableWidget.setHorizontalHeaderItem(0, QtWidgets.QTableWidgetItem("ID"))
         self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Title"))
         self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Price"))
+        self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Supplier"))
         self.tableWidget.setColumnWidth(0, 30)
         self.tableWidget.setColumnWidth(1, 130)
         self.tableWidget.setColumnWidth(2, 130)
+        self.tableWidget.setColumnWidth(3, 120)
         self.tableWidget.verticalHeader().hide()
         self.tableWidget.setStyleSheet("color: black")
 
@@ -106,7 +108,7 @@ class Ui_SearchProd(object):
         QtCore.QMetaObject.connectSlotsByName(SearchWindow)
 
         self.fill_data()
-
+        self.butSearch.clicked.connect(self.search_products)
         self.butSuppS.clicked.connect(self.butSuppS_clicked)
         self.butDelete.clicked.connect(self.delete_product)
 
@@ -119,6 +121,7 @@ class Ui_SearchProd(object):
             self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
             self.tableWidget.setItem(rowPosition, 1, QtWidgets.QTableWidgetItem(res[1]))
             self.tableWidget.setItem(rowPosition, 2, QtWidgets.QTableWidgetItem(str(res[2])))
+            self.tableWidget.setItem(rowPosition, 3, QtWidgets.QTableWidgetItem(str(res[3])))
 
     def retranslateUi(self, SearchWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -148,6 +151,64 @@ class Ui_SearchProd(object):
         while (self.tableWidget.rowCount() > 0):
             self.tableWidget.removeRow(0)
         self.fill_data()
+
+    def search_products(self):
+        args={'title':'',
+        'price_from':'',
+        'price_to':'',
+        'supplier':'',
+        'order_by':'',
+        'group_by':''}
+        self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Title"))
+        self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Price"))
+        self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Supplier"))
+        self.tableWidget.setColumnWidth(1, 130)
+        self.tableWidget.setColumnWidth(3, 120)
+        while (self.tableWidget.rowCount() > 0):
+            self.tableWidget.removeRow(0)
+        args['title'] = self.textSearch.toPlainText()
+
+        if(self.textFrom.toPlainText() == ""):
+            args['price_from'] = str(0.0)
+        else:
+            args['price_from'] = self.textFrom.toPlainText()
+
+        if(self.textTo.toPlainText() == ""):
+            res=getresult(mycursor.execute("select max(price) from product"))[0]
+            print(res)
+            args['price_to']=str(res[0])
+        else:
+            args['price_to']=self.textTo.toPlainText()
+
+        args['supplier']=self.textSupp.toPlainText()
+
+        if(self.comboBox.currentText()!="Choose order"):
+            args['order_by']=self.comboBox.currentText().lower()
+        if(self.chboxDesc.isChecked()):
+            args['order_by']+=" desc"
+        if(self.cboxGroup.currentText()!="Choose group by"):
+            args['group_by']=self.cboxGroup.currentText().lower()
+            self.tableWidget.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem(self.cboxGroup.currentText()))
+            self.tableWidget.setHorizontalHeaderItem(3, QtWidgets.QTableWidgetItem("Sum"))
+            self.tableWidget.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Average"))
+            self.tableWidget.setColumnWidth(1, 200)
+            self.tableWidget.setColumnWidth(3, 50)
+        print(args)
+        result=search_products(args)
+        print(result)
+
+        for res in result:
+            rowPosition = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(rowPosition)
+            self.tableWidget.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(res[0])))
+            if(self.cboxGroup.currentText()=="Meal"):
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(str(res[1]) + ": "+ str(res[4]) + "$"))
+            elif(self.cboxGroup.currentText()=="Supplier"):
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(str(res[1])))
+            else:
+                self.tableWidget.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(res[1]))
+            self.tableWidget.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
+            self.tableWidget.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
 
 
 if __name__ == "__main__":

@@ -71,7 +71,6 @@ class UiMealWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.fill()
         self.butUndo.clicked.connect(self.fill)
-        self.butSave.clicked.connect(self.changes)
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate

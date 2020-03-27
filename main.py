@@ -129,10 +129,40 @@ def delete_meals(id):
   mycursor.execute("Delete from meal where id="+str(id))
   mydb.commit()
 
+def search_products(args):
+  search="select * from product"
+  if(args):
+    if(args['group_by']!=''):
+      if(args['group_by']=='meal'):
+        search="select m.id, m.title, round(avg(p.price),2), round(sum(p.price), 2), m.price from meal m join meal_product mp on mp.meal_id=m.id join product p on p.id=mp.prod_id group by mp.meal_id order by mp.id"
+      else:
+        search="select s.id, s.title, round(avg(p.price),2), round(sum(p.price),2) from supplier s join product p on p.Supp_id=s.id group by s.id order by s.id"
+    else:
+      search="select p.id, p.title, p.price, p.supp_id from product p "
+      if(args["supplier"]!=""):
+        search+=" join supplier s on p.supp_id=s.id where s.id="+args["supplier"] + " and "
+      else:
+        search+="where "
+      search+="p.price between "+args['price_from']+" and "+args['price_to']
+      if(args['title']!=''):
+        search+=" and p.title like \'"+args['title']+"%\'"
+      if(args['order_by']==" desc"):
+        search+=" order by p.id desc"
+      elif(args['order_by']!=''):
+        search+=" order by "+args['order_by']
+      else:
+        search+=" order by p.id"
+    
+  print(search)
+  mycursor.execute(search)
+  result=getresult(mycursor)
+  print(result)
+  return result
+
 def delete_product(id):
   mycursor.execute("delete from meal_product where prod_id="+str(id))
   mycursor.execute("delete from product where id="+str(id))
-  # mydb.commit()
+  mydb.commit()
 
 
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
