@@ -23,9 +23,9 @@ class UiMealWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 30, 61, 16))
         self.label.setObjectName("label")
-        self.textFN = QtWidgets.QTextEdit(self.centralwidget)
-        self.textFN.setGeometry(QtCore.QRect(90, 20, 131, 31))
-        self.textFN.setObjectName("textFN")
+        self.textTitle = QtWidgets.QTextEdit(self.centralwidget)
+        self.textTitle.setGeometry(QtCore.QRect(90, 20, 131, 31))
+        self.textTitle.setObjectName("textTitle")
         self.label_7 = QtWidgets.QLabel(self.centralwidget)
         self.label_7.setGeometry(QtCore.QRect(20, 80, 61, 16))
         self.label_7.setObjectName("label_7")
@@ -89,8 +89,8 @@ class UiMealWindow(object):
     def fill(self):
         if(self.id!=0):
             res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
-            self.textFN.clear()
-            self.textFN.insertPlainText(res[1])
+            self.textTitle.clear()
+            self.textTitle.insertPlainText(res[1])
             self.sboxPrice.setValue(res[2])
             self.sboxTime.setValue((res[3]).total_seconds())
             res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
@@ -110,13 +110,13 @@ class UiMealWindow(object):
                 self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
 
     def changes(self):
-        if(self.textFN.toPlainText()==""):
-            self.textFN.insertPlainText("Enter title!")
+        if(self.textTitle.toPlainText()==""):
+            self.textTitle.insertPlainText("Enter title!")
             return
         if(self.id!=0):
-            mycursor.execute("update meal set title=\'"+self.textFN.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=\'"+self.sboxTime.text()+"\' where id="+str(self.id))
+            mycursor.execute("update meal set title=\'"+self.textTitle.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=\'"+self.sboxTime.text()+"\' where id="+str(self.id))
         else:
-            insert="insert into meal (title, price, prep_time) values(\'"+self.textFN.toPlainText()+"\', "+self.sboxPrice.text().replace(",", ".")+", time(\'00:00:"+self.sboxTime.text()+"\'))"
+            insert="insert into meal (title, price, prep_time) values(\'"+self.textTitle.toPlainText()+"\', "+self.sboxPrice.text().replace(",", ".")+", time(\'00:00:"+self.sboxTime.text()+"\'))"
             print(insert)
             mycursor.execute(insert) 
             self.id=getresult(mycursor.execute("Select max(id) from meal"))[0][0]

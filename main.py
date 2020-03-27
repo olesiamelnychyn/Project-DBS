@@ -129,6 +129,11 @@ def delete_meals(id):
   mycursor.execute("Delete from meal where id="+str(id))
   mydb.commit()
 
+def delete_product(id):
+  mycursor.execute("delete from meal_product where prod_id="+str(id))
+  mycursor.execute("delete from product where id="+str(id))
+  # mydb.commit()
+
 
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
 # mycursor.execute("drop table meal_product;")
