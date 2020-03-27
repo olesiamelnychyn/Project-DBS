@@ -88,6 +88,9 @@ class UiMealWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EmployeeWindow)
         self.fill()
         self.butUndo.clicked.connect(self.fill)
+        self.butProdS.clicked.connect(self.prod_search)
+        self.butAddProd.clicked.connect(self.add_product)
+        self.butDelProd.clicked.connect(self.del_product)
 
     def retranslateUi(self, EmployeeWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -106,16 +109,17 @@ class UiMealWindow(object):
 
     def fill(self):
         if(self.id!=0):
-            res=getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0]
+            res=getresult(mycursor.execute("select id, title, price, DATE_FORMAT(prep_time, \"%i\")  from meal where id="+str(self.id)))[0]
             self.textTitle.clear()
+            print(res[3])
             self.textTitle.insertPlainText(res[1])
             self.sboxPrice.setValue(res[2])
-            self.sboxTime.setValue((res[3]).total_seconds())
-            res=getresult(mycursor.execute("select p.title, p.price, s.title from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
+            self.sboxTime.setValue(int(res[3]))
+            res=getresult(mycursor.execute("select p.title, p.price, s.title, p.id from product p join meal_product m on m.prod_id=p.id join supplier s on p.supp_id=s.id where m.meal_id="+str(self.id)))
             print(res)
             self.listWidgetProd.clear()
             for result in res:
-                self.listWidgetProd.addItem(result[0]+", price: "+str(result[1])+", supplier: "+result[2])
+                self.listWidgetProd.addItem("ID: "+str(result[3])+", "+result[0]+", price: "+str(result[1])+", supplier: "+result[2])
             res=getresult(mycursor.execute("select r.capacity, zc.state from restaurant r join meal_rest m on m.rest_id=r.id join zip zc on r.zip=zc.code where m.meal_id="+str(self.id)))
             self.listWidgetRest.clear()
             for result in res:
@@ -127,20 +131,50 @@ class UiMealWindow(object):
             for result in res:
                 self.listWidgetReserv.addItem("Visitors: "+str(result[2])+", start: "+str(result[0])+", end: "+str(result[1]))
 
+
     def changes(self):
         if(self.textTitle.toPlainText()==""):
             self.textTitle.insertPlainText("Enter title!")
             return
         if(self.id!=0):
-            mycursor.execute("update meal set title=\'"+self.textTitle.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=\'"+self.sboxTime.text()+"\' where id="+str(self.id))
+            mycursor.execute("update meal set title=\'"+self.textTitle.toPlainText()+"\', price=\'"+self.sboxPrice.text()+"\', prep_time=time(\"00:"+self.sboxTime.text()+":00\") where id="+str(self.id))
         else:
-            insert="insert into meal (title, price, prep_time) values(\'"+self.textTitle.toPlainText()+"\', "+self.sboxPrice.text().replace(",", ".")+", time(\'00:00:"+self.sboxTime.text()+"\'))"
+            insert="insert into meal (title, price, prep_time) values(\'"+self.textTitle.toPlainText()+"\', "+self.sboxPrice.text().replace(",", ".")+", time(\"00:"+self.sboxTime.text()+":00\"))"
             print(insert)
             mycursor.execute(insert) 
             self.id=getresult(mycursor.execute("Select max(id) from meal"))[0][0]
             print(self.id)
         print(getresult(mycursor.execute("select * from meal where id="+str(self.id)))[0])
         mydb.commit()
+
+    def prod_search(self):
+        if(self.textProdID.toPlainText()!=''):
+            result=getresult(mycursor.execute("select id, title, price from product where id="+self.textProdID.toPlainText()))[0]
+            print(result)
+            self.listWProd.clear()
+            self.listWProd.addItem(result[1]+", price: "+str(result[2]))
+    
+    def add_product(self):
+        if(self.id==0):
+            self.textProdID.insertPlainText("Create meal first!")
+            return
+        if(self.textProdID.toPlainText()!='' ):
+            print(len(getresult(mycursor.execute("select * from meal_product where meal_id="+str(self.id)+" and prod_id="+self.textProdID.toPlainText()))))
+            if(len(getresult(mycursor.execute("select * from meal_product where meal_id="+str(self.id)+" and prod_id="+self.textProdID.toPlainText())))==0):
+                mycursor.execute("insert into meal_product (meal_id, prod_id) values("+str(self.id)+", "+self.textProdID.toPlainText()+")")
+                # mydb.commit()
+                self.fill()
+
+    def del_product(self):
+        # print(self.listWidgetProd.selectedItems()[0].text())
+        if(len(self.listWidgetProd.selectedItems())!=0):
+            # print("here")
+            x=self.listWidgetProd.selectedItems()[0].text().split(",")[0].replace("ID: ", "")
+            mycursor.execute("delete from meal_product where prod_id="+x)
+            # mydb.commit()
+            print(x)
+            self.listWidgetProd.clear()
+            self.fill()
 
 if __name__ == "__main__":
     import sys

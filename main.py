@@ -298,20 +298,23 @@ def delete_product(id):
 # printresult(mycursor)
 # mydb.commit()
 # mycursor.execute("Delete from meal_product")
+# mycursor.execute("Delete from meal_rest")
+# mycursor.execute("Delete from meal_reserv")
+# mycursor.execute("Delete from cheque")
 # mycursor.execute("Delete from meal")
 # mycursor.execute("Delete from product")
 # mydb.commit()
 
 # sqlinsert="INSERT INTO meal (id, title, price, prep_time) VALUES(%s, %s, %s, %s)"
 # values=[
-#   (1,"Greek salad", 4.5, "10"),
-#   (2, "Salad \"Caesar\"", 4.25, "13"),
-#   (3,"Milkshake", 2.5, "5"),
-#   (4,"Pancakes with marple syrup", 3.3, "15"),
-#   (5,"Pork stake", 6.0, "30"),
-#   (6,"Pizza \"Hawaii\"", 3.5, "20"),
-#   (7,"Backed losos", 5.8, "25"),
-#   (8,"Coffee", 2.1, "7")
+#   (1,"Greek salad", 4.5, "00:10:00"),
+#   (2, "Salad \"Caesar\"", 4.25, "00:13:00"),
+#   (3,"Milkshake", 2.5, "00:05:00"),
+#   (4,"Pancakes with marple syrup", 3.3, "00:15:00"),
+#   (5,"Pork stake", 6.0, "00:30:00"),
+#   (6,"Pizza \"Hawaii\"", 3.5, "00:20:00"),
+#   (7,"Backed losos", 5.8, "00:25:00"),
+#   (8,"Coffee", 2.1, "00:07:00")
 # ]
 # mycursor.executemany(sqlinsert,values)
 # mycursor.execute('Select * from meal')
