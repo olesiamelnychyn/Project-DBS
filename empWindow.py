@@ -125,25 +125,23 @@ class Ui_EmployeeWindow(object):
         
         self.cboxRest.currentTextChanged.connect(self.Change_reservation)
         if(id_emp == 0):
-            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id ")
+            mycursor.execute("select r.capacity, zc.code, zc.state, r.id from zip zc join restaurant r on r.zip=zc.code ")
             res3=getresult(mycursor)
             print(res3)
             for x in res3:
-                item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2] +", "+str(x[3])
+                item = "Capacity: "+str(x[0])+", "+x[1] +", "+ x[2] +", "+str(x[3])
                 self.cboxRest.addItem(item)
 
     def Change_reservation(self, id_emp=1):
-        rest_id = str(self.cboxRest.currentText()).split(',')[3]
-        self.listView.clear()
-        print("right there")
-        mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
-        res3=getresult(mycursor)
-        print(res3)
-        # if(mycursor.fetchall() != None):
-        # res3=getresult(mycursor)
-        # print(res3)
-        for x in res3:
-            self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
+        if(self.cboxRest.count() > 0):
+            rest_id = str(self.cboxRest.currentText()).split(',')[3]
+            self.listView.clear()
+            print("right there")
+            mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+rest_id)
+            res3=getresult(mycursor)
+            print(res3)
+            for x in res3:
+                self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
         
     def Save_employee(self):
         if(self.textFN.toPlainText() != "" and self.textLN.toPlainText() != "" and (self.rbtnF.isChecked() or self.rbtnM.isChecked())
@@ -182,6 +180,8 @@ class Ui_EmployeeWindow(object):
 
     def Fill_employee(self):
         if(self.id_emp != 0):
+            if(self.cboxRest.count() > 0):
+                self.cboxRest.clear()
             mycursor.execute("select * from employee where id='"+str(self.id_emp)+"'; ")
             res=getresult(mycursor)[0]
             print(res)
@@ -197,12 +197,10 @@ class Ui_EmployeeWindow(object):
             self.textEmail.setText(str(res[7]))
             self.textPosition.setText(str(res[8]))
             self.sboxWage.setValue(int(res[9]))
-            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id="+str(res[1]))
+            mycursor.execute("select r.capacity, zc.code, zc.state, r.id from zip zc join restaurant r on r.zip=zc.code where r.id="+str(res[1]))
             res2=getresult(mycursor)[0]
-            # self.cboxRest.clear()
             self.cboxRest.addItem("Capacity: "+str(res2[0])+", "+res2[1]+", "+res2[2]+", "+str(res2[3]))
-            mycursor.execute("select r.capacity, zc.city, zc.state, r.id from zip zc join restaurant r on r.zip=zc.id where r.id!="+str(res[1]))
-
+            mycursor.execute("select r.capacity, zc.code, zc.state, r.id from zip zc join restaurant r on r.zip=zc.code where r.id!="+str(res[1]))
             for x in mycursor:
                 item = "Capacity: "+str(x[0])+", "+x[1]+", "+x[2]+", "+str(x[3])
                 self.cboxRest.addItem(item)
@@ -210,6 +208,7 @@ class Ui_EmployeeWindow(object):
                 mycursor.execute("select reservation.id, reservation.date_start, reservation.date_end, reservation.visitors FROM (reservation join emp_reserv on (reservation.id = emp_reserv.reserv_id and emp_reserv.emp_id = "+str(self.id_emp)+")) where reservation.rest_id = "+str(res[1]))
                 res3=getresult(mycursor)
                 print(res3)
+                self.listView.clear()
                 for x in res3:
                     self.listView.addItem(str(x[0])+": "+str(x[1])+"-"+str(x[2])+", vis: "+str(x[3]))
                 

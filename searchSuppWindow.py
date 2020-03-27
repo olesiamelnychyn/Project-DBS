@@ -44,7 +44,14 @@ class Ui_SuppWindow(object):
         self.tableWidget.setColumnWidth(0, 30)
         self.tableWidget.setColumnWidth(1, 145)
         self.tableWidget.setColumnWidth(2, 100)
-        self.tableWidget.setColumnWidth(3, 145)
+        self.tableWidget.setColumnWidth(3, 135)
+        
+        # Button Home
+        self.butHome = QtWidgets.QPushButton(self.centralwidget)
+        self.butHome.setGeometry(QtCore.QRect(450, 170, 31, 31))
+        self.butHome.setStyleSheet("background-image: url(./img/home.png);")
+        self.butHome.setText("")
+        self.butHome.setObjectName("butHome")
 
         self.textTittle = QtWidgets.QTextEdit(self.centralwidget)
         self.textTittle.setGeometry(QtCore.QRect(520, 50, 104, 31))

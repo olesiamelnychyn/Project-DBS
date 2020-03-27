@@ -73,7 +73,7 @@ class Ui_SearchMeal(object):
         self.tableWidget.setColumnWidth(0, 30)
         self.tableWidget.setColumnWidth(1, 130)
         self.tableWidget.setColumnWidth(2, 130)
-        self.tableWidget.setColumnWidth(3, 130)
+        self.tableWidget.setColumnWidth(3, 120)
         self.tableWidget.verticalHeader().hide()
         self.tableWidget.setRowCount(0)
 
@@ -96,6 +96,12 @@ class Ui_SearchMeal(object):
         self.cboxGroup.addItem("Restaurant")
         self.cboxGroup.addItem("Reservation")
 
+        # Button Home
+        self.butHome = QtWidgets.QPushButton(self.centralwidget)
+        self.butHome.setGeometry(QtCore.QRect(205, 450, 31, 31))
+        self.butHome.setStyleSheet("background-image: url(./img/home.png);")
+        self.butHome.setText("")
+        self.butHome.setObjectName("butHome")
 
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(460, 270, 41, 27))
