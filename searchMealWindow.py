@@ -23,6 +23,7 @@ class Ui_SearchMeal(object):
         self.textSearch.setGeometry(QtCore.QRect(10, 10, 421, 31))
         self.textSearch.setStyleSheet("")
         self.textSearch.setObjectName("textSearch")
+        self.textSearch.setPlaceholderText("Enter title here...")
         self.butSearch = QtWidgets.QPushButton(self.centralwidget)
         self.butSearch.setGeometry(QtCore.QRect(460, 450, 161, 31))
         self.butSearch.setObjectName("butSearch")

@@ -56,6 +56,7 @@ class Ui_SuppWindow(object):
         self.textTittle = QtWidgets.QTextEdit(self.centralwidget)
         self.textTittle.setGeometry(QtCore.QRect(520, 50, 104, 31))
         self.textTittle.setObjectName("textTittle")
+        self.textTittle.setPlaceholderText("Enter title here...")
         self.textPhone = QtWidgets.QTextEdit(self.centralwidget)
         self.textPhone.setGeometry(QtCore.QRect(520, 90, 104, 31))
         self.textPhone.setObjectName("textPhone")
