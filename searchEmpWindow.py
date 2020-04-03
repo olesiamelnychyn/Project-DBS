@@ -257,7 +257,7 @@ class Ui_SearchWindow(object):
         if(self.rbtnM.isChecked() and not self.rbtnF.isChecked() ):
             args['gender']="M"
         elif (self.rbtnF.isChecked() and not self.rbtnM.isChecked()):
-            args['gender']="W"
+            args['gender']="F"
         if(self.cboxPos.currentText()!="Choose position"):
             args['position']=self.cboxPos.currentText().lower()
             

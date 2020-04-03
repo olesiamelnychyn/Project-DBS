@@ -151,7 +151,7 @@ class Ui_EmployeeWindow(object):
             if(self.rbtnM.isChecked()):
                 m = "M" 
             else:
-                m = "W"
+                m = "F"
             rest_id = str(self.cboxRest.currentText()).split(',')[3]
             print(self.dateEdit.text())
             if(self.id_emp != 0):
