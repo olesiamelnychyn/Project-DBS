@@ -1,17 +1,17 @@
 import mysql.connector
 import threading, sys 
 
-try:
-  mydb = mysql.connector.connect(
-    host="sql7.freemysqlhosting.net",
-    user="sql7328399",
-    passwd="JiuG5rmmFh",
-    database='sql7328399',
-    port="3306",
-  )
-except Exception as identifier:
-  print("There is a problem with connecting the database. Check the connection, maybe the password is wrong!🙂")
-  sys.exit()
+# try:
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="rest_manager",
+  passwd="best_rest",
+  database='restaurant_net',
+  port="3306"
+)
+# except Exception as identifier:
+#   print("There is a problem with connecting the database. Check the connection, maybe the password is wrong!🙂")
+#   sys.exit()
 
 mycursor = mydb.cursor()
 print("run the mydb")
