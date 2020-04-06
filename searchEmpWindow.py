@@ -275,12 +275,14 @@ class Ui_SearchWindow(object):
         
         if(args['group_by']!=''):
             # self.tableView.setColumnCount(2)
-            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Summ(Wage)"))
-            self.tableView.setColumnWidth(0, 330)
+            self.tableView.setHorizontalHeaderItem(2, QtWidgets.QTableWidgetItem("Summ(Wage)"))
+            self.tableView.setHorizontalHeaderItem(1, QtWidgets.QTableWidgetItem("Avg(Wage)"))
+            self.tableView.setColumnWidth(0, 230)
             self.tableView.setColumnWidth(1, 100)
+            self.tableView.setColumnWidth(2, 100)
             self.butAdd.setDisabled(True)
             self.butDelete.setDisabled(True)
-            self.tableView.setDisabled(True)
+            # self.tableView.setDisabled(True)
             self.tableView.setStyleSheet("color: black")
         elif("restaurant"==args['order_by'] or "restaurant desc"==args['order_by']):
             args['order_by']="rest_id"+args['order_by'][10:]
@@ -322,7 +324,7 @@ class Ui_SearchWindow(object):
                 mycursor.execute("select r.capacity, zc.state from zip zc join restaurant r on r.zip=zc.code where r.id="+str(res[0])+";")
                 result2=getresult(mycursor)[0]
                 print(result2)
-                it="Capacity: "+str(result2[0])+", "+result2[1]+", "+result2[2]
+                it="Capacity: "+str(result2[0])+", "+result2[1]
                 self.tableView.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(it))
             elif(args['group_by']=="reservation"):
                 mycursor.execute("select rest.id, reserv.date_start, reserv.date_end, reserv.visitors from restaurant rest join reservation reserv on rest.id=reserv.rest_id where reserv.id="+str(res[0])+";")
@@ -338,8 +340,9 @@ class Ui_SearchWindow(object):
             else:
                 self.tableView.setItem(rowPosition ,0, QtWidgets.QTableWidgetItem(str(res[0])))
             self.tableView.setItem(rowPosition ,1, QtWidgets.QTableWidgetItem(str(res[1])))
+            self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(str(res[2])))
             if(args['group_by']==''):
-                self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
+                # self.tableView.setItem(rowPosition ,2, QtWidgets.QTableWidgetItem(res[2]))
                 self.tableView.setItem(rowPosition ,3, QtWidgets.QTableWidgetItem(str(res[3])))
             if("rest_id"==args['order_by'] or "rest_id desc"==args['order_by']):
                 self.tableView.setItem(rowPosition ,4, QtWidgets.QTableWidgetItem(str(res[4])))

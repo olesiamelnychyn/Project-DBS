@@ -1,7 +1,9 @@
 import mysql.connector
 import threading, sys 
 
+# mysql -u username -p -D database_name < tableName.sql
 # try:
+
 mydb = mysql.connector.connect(
   host="localhost",
   user="rest_manager",
@@ -15,6 +17,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 print("run the mydb")
+
 
 def printresult(result):
   for x in mycursor:
@@ -31,15 +34,16 @@ def search_all(args):
 
   if(args['group_by']!=''):
     if(args['group_by']=='reservation'):
-      search="select r.reserv_id, sum(e.wage) from employee e join emp_reserv r on r.emp_id=e.id group by r.reserv_id"
+      search="select r.reserv_id, round(avg(wage),2) as awg, sum(e.wage) as wg from employee e join emp_reserv r on r.emp_id=e.id group by r.reserv_id"
     elif(args['group_by']=='restaurant'):
-      search="select rest_id, sum(wage) from employee group by rest_id"
+      search="select rest_id, round(avg(wage),2) as awg, sum(wage) as wg from employee group by rest_id"
     else: 
-      search="select "+args['group_by']+", sum(wage) from employee group by "+args['group_by']
+      search="select "+args['group_by']+", round(avg(wage),2) as awg, sum(wage) as wg from employee group by "+args['group_by']
+    search+=" having awg between %s and %s" %(args['wage1'],args['wage2'])
     if(args['order_by']=="wage"):
-      search+=" order by sum(wage)"
+      search+=" order by awg"
     elif(args['order_by']=="wage desc"):
-      search+=" order by sum(wage) desc"
+      search+=" order by awg desc"
   
   else:
     search="Select e.id, e.first_name, e.last_name, e.wage, e.rest_id, e.position, e.gender from employee e "
@@ -104,9 +108,9 @@ def search_meals(args):
   if(args):
     if(args['group_by']!=''):
       if(args['group_by']=='reservation'):
-        search="Select r.id, r.visitors, round(avg(m.price),2), round(sum(m.price)*r.visitors,2), DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\") from meal m join meal_reserv mr on mr.meal_id=m.id join reservation r on mr.reserv_id=r.id group by mr.reserv_id  order by mr.id"
+        search="Select r.id, r.visitors, round(avg(m.price),2) as avg, round(sum(m.price)*r.visitors,2), DATE_FORMAT(r.date_start, \"%H:%i\"), DATE_FORMAT(r.date_end, \"%H:%i\") from meal m join meal_reserv mr on mr.meal_id=m.id join reservation r on mr.reserv_id=r.id group by mr.reserv_id having avg between "+args['price_from']+" and "+args['price_to']+" order by mr.reserv_id"
       else:
-        search="Select r.id, r.capacity, round(avg(m.price),2), round(sum(m.price)*r.capacity,2), zc.state from meal m join meal_rest mr on mr.meal_id=m.id join restaurant r on mr.rest_id=r.id join zip zc on r.zip=zc.code group by mr.rest_id order by mr.id"
+        search="Select r.id, r.capacity, round(avg(m.price),2) as avg, round(sum(m.price)*r.capacity,2), zc.state from meal m join meal_rest mr on mr.meal_id=m.id join restaurant r on mr.rest_id=r.id join zip zc on r.zip=zc.code group by mr.rest_id having avg between %s and %s order by mr.rest_id"%(args['price_from'], args['price_to'])
     else:
       search="Select m.id, m.title, m.price, m.prep_time from meal m "
       if(args["product_in"]!=""):
@@ -143,6 +147,7 @@ def search_products(args):
         search="select m.id, m.title, round(avg(p.price),2), round(sum(p.price), 2), m.price from meal m join meal_product mp on mp.meal_id=m.id join product p on p.id=mp.prod_id group by mp.meal_id order by mp.id"
       else:
         search="select s.id, s.title, round(avg(p.price),2), round(sum(p.price),2) from supplier s join product p on p.Supp_id=s.id group by s.id order by s.id"
+
     else:
       search="select p.id, p.title, p.price, p.supp_id from product p "
       if(args["supplier"]!=""):
@@ -170,7 +175,8 @@ def delete_product(id):
   mycursor.execute("delete from product where id="+str(id))
   mydb.commit()
 
-
+mycursor.execute("Select * from cheque limit 2")
+printresult(mycursor)
 # mycursor.execute("drop table emp_reserv; drop table meal_rest; drop table meal_product; drop table meal_reserv;")
 # mycursor.execute("drop table meal_product;")
 # mycursor.execute("drop table meal_reserv")

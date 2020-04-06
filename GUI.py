@@ -7,7 +7,7 @@ from PyQt5.QtGui import *
 from startWindow import *
 from searchEmpWindow import *
 from searchSuppWindow import *
-from empWindow import *
+from searchEmpWindow import *
 from searchMealWindow import *
 from searchProdWindow import *
 from mealWindow import *
