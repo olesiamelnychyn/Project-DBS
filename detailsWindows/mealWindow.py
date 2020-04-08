@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from main import *
+from SQLfiles.main import *
 import datetime
 
 class UiMealWindow(object):

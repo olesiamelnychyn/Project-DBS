@@ -9,7 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import GUI
-from main import *
+from SQLfiles.main import *
 
 
 class Ui_SearchMeal(object):

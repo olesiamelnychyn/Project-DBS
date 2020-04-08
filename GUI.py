@@ -5,13 +5,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from startWindow import *
-from searchEmpWindow import *
-from searchSuppWindow import *
-from searchEmpWindow import *
-from searchMealWindow import *
-from searchProdWindow import *
-from mealWindow import *
-from prodWindow import *
+from searchWindows import *
+from searchWindows.searchEmpWindow import *
+from searchWindows.searchSuppWindow import *
+from searchWindows.searchEmpWindow import *
+from searchWindows.searchMealWindow import *
+from searchWindows.searchProdWindow import *
+from detailsWindows.mealWindow import *
+from detailsWindows.prodWindow import *
+from SQLfiles.main import *
 # from PyQt5.QtWidgets import QTableWidgetItem
 
 class MainWin(QtWidgets.QMainWindow):

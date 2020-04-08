@@ -10,7 +10,7 @@
 # from PyQt5 import QtCore, QtGui, QtWidgets
 # from QtGui import *
 # from QtCore import *
-from main import *
+from SQLfiles.main import *
 from GUI import *
 
 class Ui_SearchWindow(object):

@@ -144,7 +144,7 @@ def search_products(args):
   if(args):
     if(args['group_by']!=''):
       if(args['group_by']=='meal'):
-        search="select m.id, m.title, round(avg(p.price),2), round(sum(p.price), 2), m.price from meal m join meal_product mp on mp.meal_id=m.id join product p on p.id=mp.prod_id group by mp.meal_id order by mp.id"
+        search="select m.id, m.title, round(avg(p.price),2), round(sum(p.price), 2), m.price from meal m join meal_product mp on mp.meal_id=m.id join product p on p.id=mp.prod_id group by mp.meal_id order by m.id"
       else:
         search="select s.id, s.title, round(avg(p.price),2), round(sum(p.price),2) from supplier s join product p on p.Supp_id=s.id group by s.id order by s.id"
 
